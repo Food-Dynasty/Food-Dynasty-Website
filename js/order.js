@@ -18,11 +18,11 @@
 
 /* ============ 0. SETTINGS ============ */
 
-// Where orders are sent. EMPTY = TEST MODE (nothing is sent; the page just shows
-// what the order would look like). To go live, create a free form at formspree.io
-// using the store's email, then paste its address here, e.g.
-//   const FORM_ENDPOINT = "https://formspree.io/f/abcdwxyz";
-const FORM_ENDPOINT = "";
+// Where orders are sent: a free Formspree form, which emails each order to the
+// address set in the Formspree dashboard (change it there, not here).
+// Set this to "" to switch back to TEST MODE (nothing is sent; the page just shows
+// what the order would look like).
+const FORM_ENDPOINT = "https://formspree.io/f/mrpqenap";
 
 const MIN_DAYS_AHEAD = 3;                    // matches the "3 days notice" policy
 

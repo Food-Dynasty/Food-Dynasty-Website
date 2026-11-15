@@ -7,8 +7,8 @@
     this file            the empty "slots" that order.js fills in
   The menu list and the tray below start EMPTY in the HTML; JavaScript fills them in.
 
-  NOT LINKED from the menu yet: it stays hidden until the store's email is set up
-  (see FORM_ENDPOINT at the top of js/order.js). Until then it runs in TEST MODE.
+  Orders are emailed through Formspree (see FORM_ENDPOINT at the top of js/order.js).
+  If FORM_ENDPOINT is emptied, the page switches to TEST MODE and shows a yellow banner.
 -->
 <html lang="en">
 
@@ -17,8 +17,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Catering Online | Food Dynasty Supermarket, Staten Island</title>
   <meta name="description" content="Send a catering order request to Food Dynasty Supermarket in Staten Island. Pick trays, platters and heroes online, and we'll call to confirm.">
-  <!-- Keeps Google from listing this page while it's in test mode. Remove when it goes live. -->
-  <meta name="robots" content="noindex">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
