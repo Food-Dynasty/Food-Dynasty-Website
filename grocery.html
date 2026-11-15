@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+  SEND US YOUR GROCERY LIST
+  The customer types their list; it goes straight into the FD Orders staff app as a
+  grocery delivery (with the in-basket checklist). Staff shop it at in-store prices,
+  enter the register total, and call the customer with it. No prices on this page.
+  Logic: js/grocery.js. Database "door": submit_grocery_list (supabase/online-grocery.sql
+  in the food-dynasty-orders project).
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Us Your Grocery List | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Send your grocery list to Food Dynasty Supermarket in Staten Island. We shop it at in-store prices, call you with the total, and deliver free on orders over $50.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css?v=20261115i">
+  <script src="js/animate.js?v=20261115i" defer></script>
+  <script src="js/grocery.js?v=20261115i" defer></script>
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hero-departments hero-short">
+      <div class="container">
+        <h1>Send Us Your Grocery List</h1>
+        <p>We shop it for you at in-store prices and deliver it to your door. Free delivery on orders over $50.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+
+        <!-- How it works: an ordered list, because the steps happen in order -->
+        <ol class="list-steps">
+          <li><strong>Send your list</strong> below: one item per line.</li>
+          <li><strong>We shop it</strong> at regular in-store prices, including this week's sales.</li>
+          <li><strong>We call you</strong> with the total before we deliver.</li>
+          <li><strong>We deliver it free</strong> on orders over $50.</li>
+        </ol>
+
+        <form class="order-form grocery-form" id="grocery-form" novalidate>
+
+          <h2>Your List</h2>
+          <label for="g-list">One item per line <span class="optional">(brand and size help us get it right)</span></label>
+          <textarea id="g-list" name="list" rows="10" required
+            placeholder="Cream-O-Land whole milk, 1 gallon&#10;5 lb chicken thighs&#10;1 dozen large eggs&#10;Goya black beans, 2 cans&#10;Bananas, 1 bunch"></textarea>
+          <p class="field-note" id="g-count">0 items</p>
+
+          <!-- What to do when something's out of stock. Radio buttons = pick one. -->
+          <fieldset class="choice-group">
+            <legend>If an item is out of stock</legend>
+            <label class="choice"><input type="radio" name="subs" value="Call me" checked> <span>Call me first</span></label>
+            <label class="choice"><input type="radio" name="subs" value="Substitute a similar item"> <span>Swap for a similar item</span></label>
+            <label class="choice"><input type="radio" name="subs" value="Skip it"> <span>Skip it</span></label>
+          </fieldset>
+
+          <h2>Your Details</h2>
+          <label for="g-name">Full name</label>
+          <input id="g-name" type="text" autocomplete="name" required>
+
+          <label for="g-phone">Phone number <span class="optional">(we'll call you with the total)</span></label>
+          <input id="g-phone" type="tel" autocomplete="tel" placeholder="718-555-0123" required>
+
+          <label for="g-address">Delivery address</label>
+          <input id="g-address" type="text" autocomplete="address-line1" placeholder="123 Main St" required>
+
+          <label for="g-apt">Apt or floor <span class="optional">(optional)</span></label>
+          <input id="g-apt" type="text" autocomplete="address-line2">
+
+          <div class="form-row">
+            <div>
+              <label for="g-city">City</label>
+              <input id="g-city" type="text" autocomplete="address-level2" value="Staten Island">
+            </div>
+            <div>
+              <label for="g-zip">ZIP code</label>
+              <input id="g-zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="10305">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label for="g-date">Delivery day</label>
+              <!-- grocery.js fills in today through 2 weeks from now -->
+              <select id="g-date"></select>
+            </div>
+            <div>
+              <label for="g-time">Time</label>
+              <!-- grocery.js fills in "As soon as possible" and times during store hours -->
+              <select id="g-time"></select>
+            </div>
+          </div>
+
+          <label for="g-notes">Notes <span class="optional">(optional)</span></label>
+          <textarea id="g-notes" rows="2" placeholder="Gate code, ring the bell, green bananas..."></textarea>
+
+          <!-- Honeypot: hidden from people, filled in by spam bots -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="g-website">Leave this empty</label>
+            <input id="g-website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <label class="check">
+            <input id="g-agree" type="checkbox" required>
+            I understand Food Dynasty will shop my list at in-store prices and <strong>call me with the total</strong> before delivering. Free delivery requires a $50 minimum.
+          </label>
+
+          <p class="form-error" id="g-error" role="alert" hidden></p>
+          <button class="button button-dark button-full" type="submit" id="g-submit">Send My List</button>
+          <p class="field-note">Prefer to see prices first? <a href="https://www.mercato.com/shop/food-dynasty-bay" target="_blank" rel="noopener">Shop on Mercato</a> or call <a href="tel:+17188161100">718-816-1100</a>.</p>
+        </form>
+
+        <!-- Shown after sending -->
+        <div class="order-done grocery-done" id="g-done" hidden tabindex="-1">
+          <h2>List received!</h2>
+          <p id="g-done-message"></p>
+          <a class="button" href="index.html">Back to Home</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p class="social">
+        <a href="https://www.instagram.com/fooddynasty_statenisland/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61573029486640" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21h2.9z"/></svg>
+          Facebook
+        </a>
+      </p>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>
