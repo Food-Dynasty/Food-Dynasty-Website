@@ -1336,6 +1336,93 @@ html {
 }
 
 
+/* ============ 11h. STORE PERKS ============ */
+
+/* Two-column grid (stacked on phones; 2 columns from 600px, see section 12) */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.perk-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.perk-list li {
+  padding: 4px 0;
+  font-weight: 600;
+}
+
+
+/* ============ 11i. SMOOTH ANIMATIONS ============
+   1) Buttons and cards lift slightly when you hover over them.
+   2) Cards and sections fade and slide up gently as you scroll to them.
+      js/animate.js adds the "reveal" class to them, then "is-visible" once they
+      appear on screen. The transition below animates between the two. */
+
+.button,
+.card,
+.save-card,
+.dept-card,
+.dept-card-simple,
+.menu-card,
+.package-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);   /* moves up 2px */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover,
+.save-card:hover,
+.package-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Starting point: invisible and 24px lower */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* End point: fully visible, in place */
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ACCESSIBILITY: some people get dizzy or distracted by motion and turn on
+   "Reduce motion" in their phone/computer settings. This respects that choice
+   by switching all of the animation off for them. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .button:hover,
+  .card:hover,
+  .save-card:hover,
+  .package-card:hover {
+    transform: none;
+  }
+}
+
+
 /* ============ 12. BIGGER SCREENS ============
    A MEDIA QUERY: rules inside only apply when the screen is at least 768px wide.
    Everything above is designed for phones first ("mobile-first"), then we
@@ -1350,6 +1437,10 @@ html {
   .grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (min-width: 1000px) {
@@ -1359,6 +1450,12 @@ html {
 
   .grid-3 {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* 5 department cards on the homepage: 5 across instead of 4 + 1.
+     ".card-grid.five" (2 classes) beats ".card-grid" (1 class). */
+  .card-grid.five {
+    grid-template-columns: repeat(5, 1fr);
   }
 
   /* Order page: menu (wider) | tray + form (narrower) */

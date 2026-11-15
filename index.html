@@ -36,6 +36,7 @@
 
   <!-- NEW: connect our own stylesheet. Without this line, the CSS file does nothing. -->
   <link rel="stylesheet" href="css/styles.css">
+  <script src="js/animate.js" defer></script>
 </head>
 
 <!-- ===================== BODY =====================
@@ -115,7 +116,11 @@
         <h3 class="pay-title">We Accept</h3>
         <ul class="pay-list">
           <li>Cash</li>
-          <li>Credit &amp; Debit</li>
+          <li>Visa</li>
+          <li>Mastercard</li>
+          <li>American Express</li>
+          <li>Discover</li>
+          <li>Apple Pay</li>
           <li>EBT / SNAP</li>
           <li>WIC</li>
           <li>OTC Cards</li>
@@ -138,7 +143,8 @@
     <section class="section" id="shop-online">
       <div class="container">
         <h2>Shop From Home</h2>
-        <div class="grid-3">
+        <!-- .card-grid: 1 column on phones, 2 on tablets, 4 on computers -->
+        <div class="card-grid">
           <article class="save-card">
             <span class="save-number">📞</span>
             <h3>Call for Free Delivery</h3>
@@ -152,10 +158,42 @@
             <a class="button" href="https://www.mercato.com/shop/food-dynasty-bay" target="_blank" rel="noopener">Shop on Mercato</a>
           </article>
           <article class="save-card">
+            <span class="save-number">🥕</span>
+            <h3>Shop on Instacart</h3>
+            <p>Order from our store in the Instacart app for same-day delivery or pickup.</p>
+            <a class="button" href="https://www.instacart.com/store/food-dynasty-supermarket/storefront" target="_blank" rel="noopener">Shop on Instacart</a>
+          </article>
+          <article class="save-card">
             <span class="save-number">🚗</span>
             <h3>Order on Uber Eats</h3>
             <p>Same-day grocery delivery through the Uber Eats app.</p>
             <a class="button" href="https://www.ubereats.com/store/food-dynasty-supermarket/D0Hlp3dlW2uBVq74RE4Q5g" target="_blank" rel="noopener">Order on Uber Eats</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORE PERKS (from the store's printed circular) -->
+    <section class="section perks" id="perks">
+      <div class="container">
+        <h2>Store Perks</h2>
+        <!-- .grid-2: two equal columns on tablets and computers, stacked on phones -->
+        <div class="grid-2">
+          <article class="save-card">
+            <span class="save-number">👵</span>
+            <h3>10% Senior Discount</h3>
+            <p><strong>All day Wednesday</strong>, and <strong>7 AM – 12 PM</strong> every other day.</p>
+          </article>
+          <article class="save-card">
+            <span class="save-number">🏪</span>
+            <h3>In-Store Conveniences</h3>
+            <!-- A list (not a paragraph) because these are separate items -->
+            <ul class="perk-list">
+              <li>ATM</li>
+              <li>Parking lot</li>
+              <li>Bakery &amp; deli</li>
+              <li>Lotto</li>
+            </ul>
           </article>
         </div>
       </div>
@@ -166,8 +204,9 @@
         <h2>What You'll Find</h2>
 
         <!-- Each department is a "card": photo, heading, short text.
-             The CSS grid (.card-grid) arranges them into columns automatically. -->
-        <div class="card-grid">
+             5 cards, so this grid gets the "five" modifier: 5 columns on wide screens
+             instead of 4 (otherwise one card would sit alone on a second row). -->
+        <div class="card-grid five">
 
           <!-- <article> = a self-contained piece of content, a good fit for a card -->
           <article class="card">
@@ -180,6 +219,12 @@
             <img src="images/meat-department.jpg" alt="Fresh cuts in the meat department">
             <h3>Meat Department</h3>
             <p>USDA Choice beef, pork and chicken at fair prices. <a href="departments.html#meat">More</a></p>
+          </article>
+
+          <article class="card">
+            <img src="images/seafood.jpg" alt="Whole fish on ice at the seafood counter">
+            <h3>Fresh Seafood</h3>
+            <p>Whole fish, fillets, clams and mussels on ice. <a href="departments.html#seafood">More</a></p>
           </article>
 
           <article class="card">
