@@ -18,15 +18,12 @@
 
 /* ============ 0. SETTINGS ============ */
 
-// Where orders are sent: a free Formspree form, which emails each order to the
-// address set in the Formspree dashboard (change it there, not here).
-// Set this to "" to switch back to TEST MODE (nothing is sent; the page just shows
-// what the order would look like).
-const FORM_ENDPOINT = "https://formspree.io/f/mrpqenap";
-
-// The FD Orders app's database. Orders go straight into the app through one
-// locked-down database function (it can only ADD a catering order).
+// Where orders are sent: the FD Orders app's database. Orders go straight into the
+// app through one locked-down database function (it can only ADD a catering order),
+// and staff get an alert in the app.
 // The key is the PUBLISHABLE one, which is meant to be public.
+// Set ORDERS_DB_URL to "" to switch to TEST MODE (nothing is sent; the page just
+// shows what the order would look like).
 const ORDERS_DB_URL = "https://hemdteagkpjodrnsiecw.supabase.co";
 const ORDERS_DB_KEY = "sb_publishable_Obe832C66r7F-T-cmZxs7Q_XSJQw9EI";
 
@@ -542,45 +539,18 @@ async function sendToOrdersApp() {
     const orderNumber = await response.json();
     return Number(orderNumber) || null;
   } catch (error) {
-    return null;   // offline, blocked, etc.: the email backup still goes out
+    return null;   // offline, blocked, etc.: the customer is asked to call instead
   }
 }
 
-// Sends the order TWO ways: into the FD Orders app, and by email as a backup.
-// It counts as sent if EITHER one works, so a single failure never loses an order.
+// Sends the order into the FD Orders app.
 // "async" lets us "await" the network without freezing the page.
 async function sendOrder(form, summary) {
-  if (!FORM_ENDPOINT) {
+  if (!ORDERS_DB_URL) {
     return { ok: true, test: true };   // TEST MODE: pretend it worked
   }
-
   const orderNumber = await sendToOrdersApp();
-
-  let emailOk = false;
-  try {
-    const response = await fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        _subject: "Catering order request" + (orderNumber ? " #" + orderNumber : "") +
-                  " (" + whenWord() + "): " + FIELDS.name.value.trim() + " · " + prettyDate(FIELDS.date.value),
-        in_orders_app: orderNumber ? "Yes, order #" + orderNumber : "NO: enter it in FD Orders by hand",
-      name: FIELDS.name.value.trim(),
-      phone: FIELDS.phone.value.trim(),
-      email: FIELDS.email.value.trim(),   // Formspree uses this as the "reply to" address
-      type: whenWord(),
-      when: prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
-      delivery_address: isDelivery() ? deliveryAddress() : "(pickup)",
-        estimated_total: money(trayTotals().total) + " incl. tax",
-        order: summary
-      })
-    });
-    emailOk = response.ok;
-  } catch (error) {
-    emailOk = false;
-  }
-
-  return { ok: Boolean(orderNumber) || emailOk, test: false, orderNumber: orderNumber };
+  return { ok: Boolean(orderNumber), test: false, orderNumber: orderNumber };
 }
 
 async function handleSubmit(event) {
@@ -607,7 +577,7 @@ async function handleSubmit(event) {
     if (!sent.ok) throw new Error("The form service said no");
     showConfirmation(form, summary, sent.test, sent.orderNumber);
   } catch (error) {
-    showError("Sorry, we couldn't send your order. Please try again, or call us at 718-816-1100.", null);
+    showError("Sorry, your order didn't go through. Please try again in a minute, or call us at 718-816-1100 and we'll take it by phone.", null);
   } finally {
     // "finally" runs whether it worked or not
     button.disabled = false;
@@ -661,7 +631,7 @@ document.querySelectorAll('input[name="fulfillment"]').forEach(function (radio) 
   radio.addEventListener("change", updateFulfillment);
 });
 
-if (!FORM_ENDPOINT) {
+if (!ORDERS_DB_URL) {
   $("test-banner").hidden = false;
 }
 

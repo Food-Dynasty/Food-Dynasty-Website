@@ -7,8 +7,9 @@
     this file            the empty "slots" that order.js fills in
   The menu list and the tray below start EMPTY in the HTML; JavaScript fills them in.
 
-  Orders are emailed through Formspree (see FORM_ENDPOINT at the top of js/order.js).
-  If FORM_ENDPOINT is emptied, the page switches to TEST MODE and shows a yellow banner.
+  Orders go straight into the FD Orders staff app (see ORDERS_DB_URL at the top of
+  js/order.js). If ORDERS_DB_URL is emptied, the page switches to TEST MODE and shows a
+  yellow banner.
 -->
 <html lang="en">
 
@@ -21,14 +22,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261115g">
-  <script src="js/animate.js?v=20261115g" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261115h">
+  <script src="js/animate.js?v=20261115h" defer></script>
 
   <!-- "defer" = download the scripts now, but run them only after the page's HTML is
        fully read. That way the empty slots exist before the JavaScript fills them in.
        Order matters: the menu data must load before the code that uses it. -->
-  <script src="js/catering-menu.js?v=20261115g" defer></script>
-  <script src="js/order.js?v=20261115g" defer></script>
+  <script src="js/catering-menu.js?v=20261115h" defer></script>
+  <script src="js/order.js?v=20261115h" defer></script>
 </head>
 
 <!-- has-tray-bar: adds room at the bottom so the phone "View tray" bar never covers the footer -->
@@ -65,7 +66,7 @@
       </div>
     </section>
 
-    <!-- Shown only while FORM_ENDPOINT in js/order.js is empty. order.js removes
+    <!-- Shown only while ORDERS_DB_URL in js/order.js is empty. order.js removes
          the "hidden" attribute to display it. -->
     <div class="test-banner" id="test-banner" hidden>
       <strong>TEST MODE:</strong> orders on this page are not sent anywhere yet.
