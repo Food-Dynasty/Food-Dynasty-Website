@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
 
   <!-- NEW: connect our own stylesheet. Without this line, the CSS file does nothing. -->
-  <link rel="stylesheet" href="css/styles.css?v=20261115">
-  <script src="js/animate.js?v=20261115" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261115c">
+  <script src="js/animate.js?v=20261115c" defer></script>
 </head>
 
 <!-- ===================== BODY =====================
@@ -89,9 +89,12 @@
 
         <!-- <h1> = the most important heading. Use ONE per page.
              (The old site had three, all in the footer — Google found that confusing.) -->
-        <h1>Your Neighborhood Supermarket on Bay Street</h1>
+        <!-- Each <span class="nw"> is a phrase that must never be split across lines
+             (nw = "no wrap"). The <br class="br-wide"> line break only shows on bigger
+             screens. Result: 2 lines on computers, 4 clean lines on phones. -->
+        <h1><span class="nw">Fresh Food.</span> <span class="nw">Great Prices.</span><br class="br-wide"> <span class="nw">Right Around</span> <span class="nw">the Corner.</span></h1>
 
-        <p>Fresh produce, quality meats, hot meals made daily and catering for every occasion. Family owned and proudly serving Staten Island.</p>
+        <p>Premium produce, quality meats, hot meals and catering for every occasion. Family owned and proudly serving Staten Island.</p>
 
         <!-- "tel:" links open the phone dialer on a phone.
              The directions link is a Google Maps "share" link (from the Share button
