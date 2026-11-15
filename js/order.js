@@ -25,6 +25,10 @@
 const FORM_ENDPOINT = "";
 
 const MIN_DAYS_AHEAD = 3;                    // matches the "3 days notice" policy
+
+// New York City sales tax on catering: 4% state + 4.5% city + 0.375% MCTD = 8.875%.
+// Written as a decimal: 8.875% = 0.08875. If the rate changes, change it only here.
+const TAX_RATE = 0.08875;
 const STORAGE_KEY = "fd-catering-tray";      // name used to save the tray in the browser
 
 
@@ -168,9 +172,34 @@ function linePrice(line) {
   return unitPrice * line.qty;
 }
 
-function trayTotal() {
+// Price of everything in the tray BEFORE tax
+function traySubtotal() {
   // reduce() walks the list and adds every line's price into one running total
   return tray.reduce(function (sum, line) { return sum + linePrice(line); }, 0);
+}
+
+// Money has to be rounded to whole cents. Computers store decimals slightly
+// imprecisely (0.1 + 0.2 = 0.30000000000000004!), so we round on purpose:
+// multiply by 100 (dollars -> cents), round, divide back.
+function roundCents(amount) {
+  return Math.round(amount * 100) / 100;
+}
+
+// Subtotal, tax, total and deposit, all calculated in ONE place
+// so every part of the page (tray, phone bar, email, printout) shows the same numbers.
+function trayTotals() {
+  const subtotal = roundCents(traySubtotal());
+  const tax = roundCents(subtotal * TAX_RATE);
+  const total = roundCents(subtotal + tax);
+  const deposit = roundCents(total / 2);
+  return { subtotal: subtotal, tax: tax, total: total, deposit: deposit };
+}
+
+// "8.875%": the rate shown to customers, built from TAX_RATE so it can't get out of sync
+function taxRateText() {
+  // toFixed(3) -> "8.875"; the pattern trims trailing zeros (and a leftover ".")
+  // so a rate like 8% shows as "8%" instead of "8.000%"
+  return (TAX_RATE * 100).toFixed(3).replace(/\.?0+$/, "") + "%";
 }
 
 function minQty(item) {
@@ -229,14 +258,17 @@ function renderTray() {
   }
 
   // Totals and the phone "View tray" bar
-  const total = trayTotal();
+  const totals = trayTotals();
   const itemCount = tray.length;
   $("tray-totals").hidden = itemCount === 0;
-  $("tray-total").textContent = money(total);
-  $("tray-deposit").textContent = money(total / 2);
+  $("tray-subtotal").textContent = money(totals.subtotal);
+  $("tray-tax-rate").textContent = taxRateText();
+  $("tray-tax").textContent = money(totals.tax);
+  $("tray-total").textContent = money(totals.total);
+  $("tray-deposit").textContent = money(totals.deposit);
   $("tray-bar").hidden = itemCount === 0;
   $("tray-bar-count").textContent = itemCount + (itemCount === 1 ? " item" : " items");
-  $("tray-bar-total").textContent = money(total);
+  $("tray-bar-total").textContent = money(totals.total);
 }
 
 // Keeps a typed amount inside the allowed range (e.g. no 3 people for a 20-person buffet)
@@ -360,7 +392,7 @@ function buildSummary(form) {
     return "• " + what + "  =  " + money(linePrice(line)) + (line.note ? "\n    Note: " + line.note : "");
   });
 
-  const total = trayTotal();
+  const totals = trayTotals();
   return [
     "FOOD DYNASTY · CATERING ORDER REQUEST",
     "",
@@ -372,8 +404,10 @@ function buildSummary(form) {
     "ITEMS",
     lines.join("\n"),
     "",
-    "Estimated total:  " + money(total) + " (plus tax)",
-    "50% deposit:      " + money(total / 2),
+    "Subtotal:         " + money(totals.subtotal),
+    "Sales tax " + taxRateText() + ": " + money(totals.tax),
+    "Estimated total:  " + money(totals.total),
+    "50% deposit:      " + money(totals.deposit),
     "",
     "Kitchen notes: " + (FIELDS.notes.value.trim() || "(none)"),
     "",
@@ -395,7 +429,7 @@ async function sendOrder(form, summary) {
       phone: FIELDS.phone.value.trim(),
       email: FIELDS.email.value.trim(),   // Formspree uses this as the "reply to" address
       pickup: prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
-      estimated_total: money(trayTotal()),
+      estimated_total: money(trayTotals().total) + " incl. tax",
       order: summary
     })
   });

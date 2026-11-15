@@ -99,10 +99,13 @@
                    (like "item added") without the user having to look for them -->
               <div id="tray-lines" aria-live="polite"></div>
 
+              <!-- order.js fills in every number here (see trayTotals() in js/order.js) -->
               <div class="tray-totals" id="tray-totals" hidden>
-                <p><span>Estimated total</span> <strong id="tray-total">$0.00</strong></p>
+                <p class="tray-small"><span>Subtotal</span> <span id="tray-subtotal">$0.00</span></p>
+                <p class="tray-small"><span>NYC sales tax (<span id="tray-tax-rate">8.875%</span>)</span> <span id="tray-tax">$0.00</span></p>
+                <p class="tray-grand"><span>Estimated total</span> <strong id="tray-total">$0.00</strong></p>
                 <p class="tray-small"><span>50% deposit when we confirm</span> <span id="tray-deposit">$0.00</span></p>
-                <p class="tray-small">Plus NY sales tax. Final price confirmed by phone.</p>
+                <p class="tray-small">Final price confirmed by phone.</p>
               </div>
             </div>
 

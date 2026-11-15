@@ -1114,6 +1114,13 @@ html {
   color: #555555;
 }
 
+/* The total line: a dividing line above it, so it reads as the "answer" */
+.tray-totals .tray-grand {
+  border-top: 2px solid var(--black);
+  padding-top: 6px;
+  margin-top: 6px;
+}
+
 /* --- The form --- */
 .order-form label {
   display: block;
