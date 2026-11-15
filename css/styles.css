@@ -1,0 +1,900 @@
+/*
+  styles.css: the LOOK of the site.
+  HTML says WHAT is on the page; CSS says HOW it looks.
+
+  Every CSS rule has the same shape:
+
+      selector {            <- WHICH elements to style
+        property: value;    <- WHAT to change
+      }
+
+  Selectors you'll see here:
+      body          -> every <body> tag (a tag name)
+      .button       -> every element with class="button" (the dot means "class")
+      .hero h1      -> any <h1> that is INSIDE an element with class="hero"
+      a:hover       -> a link while the mouse is over it
+
+  This file is linked from index.html with:  <link rel="stylesheet" href="css/styles.css">
+  Every page will share this one file, so changing a color here changes it everywhere.
+*/
+
+
+/* ============ 1. VARIABLES ============
+   ":root" is the whole page. We store our brand colors here ONCE as "custom properties"
+   (names starting with --) and reuse them below with var(--name).
+   Want a different yellow? Change it here and the whole site updates. */
+:root {
+  --yellow: #ffd100;      /* the crown in your logo */
+  --yellow-dark: #e6bc00; /* slightly darker, for hover effects */
+  --black: #111111;
+  --gray-light: #f6f6f4;  /* soft background for alternating sections */
+  --text: #222222;
+  --max-width: 1100px;    /* content never gets wider than this on big screens */
+}
+
+
+/* ============ 2. BASE STYLES ============ */
+
+/* "box-sizing: border-box" makes widths include padding and borders.
+   Almost every professional site starts with this; it makes sizes predictable.
+   The * selector means "every element". */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;  /* browsers add an 8px margin by default; we remove it */
+  font-family: "Poppins", Arial, sans-serif;  /* Poppins first; Arial if it fails to load */
+  color: var(--text);
+  /* Always set a background explicitly! If you don't, some browsers in dark mode
+     fill in their own dark color and your dark text becomes unreadable. */
+  background: white;
+  line-height: 1.6;  /* space between lines of text: easier to read */
+}
+
+/* Images never overflow their container, and keep their proportions.
+   This one rule replaces all the width="300" attributes we had in step 1. */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+}
+
+/* A reusable "wrapper": centers content and limits its width.
+   margin: 0 auto  = 0 on top/bottom, "auto" on left/right, which centers it.
+   padding: 0 16px = keeps text off the screen edges on phones. */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+
+/* ============ 3. TOP INFO BAR ============
+   The thin bar with hours and address. The old site hid this in the footer. */
+.top-bar {
+  background: var(--yellow);
+  color: var(--black);
+  font-size: 0.85rem;  /* rem = relative to the browser's base font size (usually 16px) */
+  font-weight: 600;
+  text-align: center;
+  padding: 6px 16px;
+}
+
+
+/* ============ 4. HEADER & NAVIGATION ============ */
+.site-header {
+  background: var(--black);
+}
+
+/* FLEXBOX: "display: flex" lines up the children (logo + nav) in a row.
+   justify-content: space-between -> logo on the left, nav pushed to the right
+   align-items: center            -> vertically centered
+   flex-wrap: wrap                -> on narrow phones the nav drops below the logo */
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.logo {
+  width: 120px;
+}
+
+/* Remove the default bullet points and spacing from the menu list,
+   then use flexbox again to put the links side by side. */
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;  /* 4px between rows, 20px between links */
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;  /* removes the underline */
+  font-weight: 600;
+  padding: 4px 0;
+  border-bottom: 3px solid transparent;  /* invisible line, shown on hover below */
+}
+
+/* :hover = mouse over it. :focus-visible = selected with the keyboard (Tab key).
+   Styling both makes the site usable without a mouse (accessibility). */
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  color: var(--yellow);
+  border-bottom-color: var(--yellow);
+}
+
+/* The page you're currently on. We mark it in the HTML with aria-current="page". */
+.main-nav a[aria-current="page"] {
+  color: var(--yellow);
+}
+
+
+/* ============ 5. HERO (the big banner) ============ */
+.hero {
+  /* Two backgrounds stacked: a dark see-through gradient ON TOP of the store photo,
+     so white text stays readable over a busy picture. */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/store-front.jpg") center / cover;
+  /* "../" means "go up one folder": this CSS file lives in css/, the images in images/ */
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+/* Small yellow line above the homepage headline */
+.hero .eyebrow {
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;  /* spreads the letters out a little: a common "label" look */
+  margin: 0 auto 8px;
+}
+
+.hero h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+
+/* ============ 6. BUTTONS ============
+   One reusable class for every button-style link on the site. */
+.button {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--black);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 6px;  /* rounded corners */
+  margin: 4px;
+  transition: background 0.2s;  /* animates the color change on hover */
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--yellow-dark);
+}
+
+/* A second style: outlined instead of filled. Used together: class="button button-outline" */
+.button-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.button-outline:hover,
+.button-outline:focus-visible {
+  background: white;
+  color: var(--black);
+}
+
+
+/* ============ 7. SECTIONS ============ */
+.section {
+  padding: 56px 0;
+}
+
+/* Alternating gray background so sections are easy to tell apart */
+.section-alt {
+  background: var(--gray-light);
+}
+
+.section h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin: 0 0 32px;
+}
+
+
+/* ============ 8. STORE HOURS ============ */
+.hours {
+  max-width: 420px;
+  margin: 0 auto;
+  background: white;
+  border-top: 6px solid var(--yellow);
+  border-radius: 8px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);  /* soft shadow: x y blur color */
+}
+
+.hours p {
+  display: flex;
+  justify-content: space-between;  /* day on the left, time on the right */
+  margin: 8px 0;
+}
+
+
+/* ============ 9. DEPARTMENT CARDS ============
+   CSS GRID: lays the cards out in columns.
+   "1fr" = one equal share of the available width. On phones: 1 column.
+   The media queries at the bottom of this file switch to 2 columns, then 4,
+   so 4 cards always come out even (never 3 + 1 lonely card). */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;  /* clips the photo's corners to the card's rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;  /* every photo gets the same shape... */
+  object-fit: cover;    /* ...cropped to fill it, without stretching */
+}
+
+.card h3 {
+  margin: 16px 16px 4px;
+}
+
+.card p {
+  margin: 0 16px 16px;
+}
+
+.card a {
+  color: var(--black);
+  font-weight: 700;
+}
+
+
+/* ============ 10. CATERING BAND ============ */
+.catering {
+  background: var(--yellow);
+  text-align: center;
+}
+
+.catering p {
+  font-size: 1.1rem;
+}
+
+/* On the yellow background a yellow button would disappear, so make it black */
+.catering .button {
+  background: var(--black);
+  color: white;
+}
+
+
+/* ============ 11. FOOTER ============ */
+.site-footer {
+  background: var(--black);
+  color: #cccccc;
+  text-align: center;
+  padding: 32px 0;
+  font-size: 0.9rem;
+}
+
+.site-footer address {
+  font-style: normal;  /* <address> is italic by default */
+}
+
+.site-footer a {
+  color: var(--yellow);
+}
+
+
+/* ============ 11b. BUFFET MENU PAGE ============ */
+
+/* MODIFIER CLASS: the buffet page's hero has class="hero hero-buffet".
+   It gets everything from .hero above, and this rule overrides ONLY the photo. */
+.hero-buffet {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/hot-food-2.jpg") center / cover;
+  /* This photo is a social post with "HOT" and "FOOD" printed at the top and bottom.
+     On phones, zoom in (180% of the width) so only the middle strip, the buffet trays,
+     shows behind our heading. On bigger screens "cover" already crops to the middle
+     (see the media query in section 12). */
+  background-size: 180%;
+}
+
+.menu-note {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+
+.menu-note a {
+  color: var(--black);
+  font-weight: 700;
+  white-space: nowrap;  /* never split the phone number across two lines at the dashes */
+}
+
+/* Each category box. Similar to .card, but with no photo and a yellow label on top. */
+.menu-card {
+  background: white;
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  padding: 0 0 16px;
+  overflow: hidden;
+}
+
+/* ".section h2" (from section 7) also matches these headings, and it would make them
+   big and add a 32px gap. This more specific rule wins and overrides those values.
+   That idea, "the more specific selector wins", is called SPECIFICITY. */
+.section .menu-card h2 {
+  background: var(--yellow);
+  font-size: 1.2rem;
+  text-transform: uppercase;  /* displays as capitals without retyping the text */
+  margin: 0 0 12px;
+  padding: 10px;
+}
+
+.menu-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.menu-card li {
+  padding: 6px 0;
+  border-bottom: 1px solid #eeeeee;  /* thin divider between dishes */
+}
+
+/* :last-child = the last item in the list; it doesn't need a divider under it */
+.menu-card li:last-child {
+  border-bottom: none;
+}
+
+
+/* ============ 11c. CATERING PAGE ============ */
+
+.hero-catering {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("../images/hot-food.jpg") center / cover;
+  background-size: 180%;  /* same phone zoom trick as .hero-buffet (text on the photo) */
+}
+
+/* Smooth scrolling when a jump link like href="#pasta" is clicked */
+html {
+  scroll-behavior: smooth;
+}
+
+/* "How to Order" numbered steps */
+.steps {
+  max-width: 520px;
+  margin: 0 auto;
+  padding-left: 24px;
+  font-size: 1.05rem;
+}
+
+.steps li {
+  margin-bottom: 10px;
+}
+
+.steps a {
+  color: var(--black);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* JUMP-LINK BAR
+   position: sticky + top: 0 = it scrolls normally until it hits the top of the
+   screen, then STICKS there while you scroll through the menu. */
+.category-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;  /* stays on top of the content scrolling underneath it */
+  background: var(--black);
+  padding: 10px 0;
+}
+
+/* On phones the 15 links stay in ONE row that you swipe sideways
+   (overflow-x: auto), instead of wrapping into a tall bar that covers the screen. */
+.category-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.category-nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border: 1px solid #555555;
+  border-radius: 999px;  /* a huge radius makes "pill" shaped buttons */
+}
+
+.category-nav a:hover,
+.category-nav a:focus-visible {
+  background: var(--yellow);
+  color: var(--black);
+  border-color: var(--yellow);
+}
+
+/* When a jump link scrolls to a section, leave room for the sticky bar
+   so the section's heading isn't hidden underneath it. */
+.menu-section,
+#packages {
+  scroll-margin-top: 60px;
+}
+
+@media (min-width: 768px) {
+  .menu-section,
+  #packages {
+    scroll-margin-top: 110px;  /* the bar wraps to 2 rows on wider screens, so it's taller */
+  }
+}
+
+/* Less space under headings in menu sections, since a price line follows */
+.section.menu-section h2 {
+  margin-bottom: 8px;
+}
+
+/* "Half tray $50 · Full tray $80" line under each category heading */
+.price-line {
+  text-align: center;
+  font-weight: 700;
+  background: var(--yellow);
+  display: table;       /* shrinks the yellow box to fit the text... */
+  margin: 0 auto 28px;  /* ...so "auto" margins can center it */
+  padding: 4px 16px;
+  border-radius: 999px;
+}
+
+/* PACKAGE CARDS (per-person buffets) */
+.package-card {
+  background: white;
+  border-radius: 10px;
+  border-top: 6px solid var(--yellow);
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.package-card h3 {
+  margin: 0;
+}
+
+/* Written as ".package-card .package-price" (not just ".package-price") on purpose:
+   the ".package-card p" rule below is MORE SPECIFIC than a single class, so it was
+   shrinking the price. Two classes beat one class + a tag, so this now wins. */
+.package-card .package-price {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 4px 0 12px;
+}
+
+.package-price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.package-card p {
+  font-size: 0.95rem;
+}
+
+/* <details> show/hide boxes */
+.info-box {
+  background: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+
+.info-box summary {
+  font-weight: 700;
+  cursor: pointer;  /* hand cursor, so it's obvious you can click it */
+}
+
+.section-alt .menu-note {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+/* MENU ITEMS with descriptions: 1 column on phones, 2 on wider screens (section 12) */
+.menu-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px 40px;
+}
+
+.menu-item {
+  padding: 12px 0;
+  border-bottom: 1px dashed #cccccc;
+}
+
+.menu-item h3 {
+  font-size: 1.05rem;
+  margin: 0 0 4px;
+}
+
+.menu-item p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #555555;
+}
+
+/* Name on the left, price on the right, on the same line */
+.menu-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;  /* lines up the bottoms of the text, not the boxes */
+  gap: 12px;
+}
+
+.price {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* TRAY LISTS: dish names only (the price is in the .price-line above).
+   "columns" splits a list into newspaper-style columns automatically. */
+.tray-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 800px;
+  columns: 1;
+}
+
+.tray-list li {
+  padding: 8px 0;
+  border-bottom: 1px dashed #cccccc;
+  break-inside: avoid;  /* never split one dish across two columns */
+  font-weight: 600;
+}
+
+/* Ordering policies: a plain bulleted list, centered with a max width */
+.policy-list {
+  max-width: 700px;
+  margin: 0 auto;
+  padding-left: 20px;
+}
+
+.policy-list li {
+  margin-bottom: 8px;
+}
+
+/* The small grey note after a dish name, like "red or white sauce" */
+.tray-list span {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+
+/* ============ 11d. DEPARTMENTS PAGE ============ */
+
+.hero-departments {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/store-aisles.jpg") center / cover;
+}
+
+/* The 4 photo departments, stacked with space between them */
+.dept-list {
+  display: grid;
+  gap: 32px;
+}
+
+/* On phones: photo on top, text below (the default "block" layout).
+   On bigger screens it becomes side-by-side (see section 12). */
+.dept-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  scroll-margin-top: 16px;  /* breathing room when reached by a link like #produce */
+}
+
+.dept-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.dept-text {
+  padding: 20px 24px 24px;
+}
+
+.dept-text h3 {
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+}
+
+.dept-text a {
+  color: var(--black);
+  font-weight: 700;
+}
+
+/* Cards without photos: a yellow stripe on the left instead */
+.dept-card-simple {
+  background: white;
+  border-left: 6px solid var(--yellow);
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.dept-card-simple h3 {
+  margin: 0 0 6px;
+}
+
+.dept-card-simple p {
+  margin: 0;
+}
+
+
+/* ============ 11e. WEEKLY SALES PAGE ============ */
+
+.hero-sales {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("../images/snacks.jpg") center / cover;
+}
+
+/* The small grey-ish line under the hero button */
+.hero .hero-small {
+  font-size: 0.85rem;
+  opacity: 0.85;  /* slightly see-through = softer than the main text */
+  margin: 8px auto 0;
+}
+
+/* A general 3-column grid (used on Departments and Weekly Sales).
+   1 column on phones; 2 and 3 columns are set in section 12. */
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.save-card {
+  text-align: center;
+  background: var(--gray-light);
+  border-radius: 12px;
+  padding: 28px 20px;
+}
+
+.save-card h3 {
+  margin: 12px 0 8px;
+}
+
+/* A yellow circle with the number in the middle:
+   equal width and height + border-radius: 50% = a circle.
+   display: inline-flex + centering puts the number in the exact middle. */
+.save-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--yellow);
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+/* A black version of the button, for light or yellow backgrounds */
+.button-dark {
+  background: var(--black);
+  color: white;
+}
+
+.button-dark:hover,
+.button-dark:focus-visible {
+  background: #333333;
+}
+
+.app-section {
+  text-align: center;
+  max-width: 640px;
+}
+
+/* Homepage "This Week's Deals" band: black, so it stands out from the
+   yellow catering band further down */
+.sales-band {
+  background: var(--black);
+  color: white;
+  text-align: center;
+}
+
+.sales-band p {
+  font-size: 1.1rem;
+}
+
+.center-button {
+  text-align: center;
+  margin: 32px 0 0;
+}
+
+
+/* ============ 11f. ABOUT PAGE ============ */
+
+/* .split = text and a photo (or map) side by side on bigger screens (section 12).
+   On phones they simply stack. */
+.split {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+
+/* ".section .split-text h2" (2 classes + tag) beats ".section h2" (1 class + tag),
+   so this heading lines up left with its paragraph instead of centered */
+.section .split-text h2 {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.split-text h3 {
+  margin: 24px 0 4px;
+}
+
+.split-text h3:first-child {
+  margin-top: 0;
+}
+
+.split-img {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* The .hours card from the homepage is centered; this modifier lines it up left */
+.hours-left {
+  margin: 0;
+}
+
+.phone-link {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+/* The Google Map iframe */
+.map {
+  width: 100%;
+  height: 360px;
+  border: 0;
+  border-radius: 12px;
+}
+
+
+/* ============ 12. BIGGER SCREENS ============
+   A MEDIA QUERY: rules inside only apply when the screen is at least 768px wide.
+   Everything above is designed for phones first ("mobile-first"), then we
+   adjust for tablets and computers here. Most of your customers will be on phones. */
+@media (min-width: 600px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);  /* same as "1fr 1fr" */
+  }
+
+  /* Must stay in this 600px block, which comes BEFORE the 1000px block below.
+     If two rules are equally specific, the LATER one in the file wins. */
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .logo {
+    width: 160px;
+  }
+
+  .hero {
+    padding: 140px 0;
+  }
+
+  .hero h1 {
+    font-size: 3.2rem;
+  }
+
+  /* A comma between selectors = "apply this rule to BOTH" (selector grouping) */
+  .hero-buffet,
+  .hero-catering {
+    background-size: cover;  /* undo the phone zoom from sections 11b and 11c */
+  }
+
+  .menu-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tray-list {
+    columns: 2;
+    column-gap: 40px;
+  }
+
+  /* About page: text | photo (or map) in two equal columns */
+  .split {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .map {
+    height: 100%;
+    min-height: 420px;
+  }
+
+  /* Department photo cards go side by side: photo | text.
+     Grid with 2 equal columns; align-items centers the text vertically. */
+  .dept-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .dept-card img {
+    height: 100%;  /* fill the full height of the card */
+  }
+
+  /* The "reverse" modifier: "order: 2" moves the photo AFTER the text,
+     so it shows on the right. The HTML order stays the same (good for screen readers). */
+  .dept-card.reverse img {
+    order: 2;
+  }
+
+  .dept-text {
+    padding: 32px 40px;
+  }
+
+  /* On bigger screens all the jump links fit, so let them wrap and center */
+  .category-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

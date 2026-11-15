@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!--
+  DEPARTMENTS PAGE: the heart of the supermarket.
+  Two kinds of cards:
+    1. Photo cards (.dept-card) for departments we have real store photos of
+    2. Simple cards (.dept-card-simple) for the rest, until the store sends photos
+  Each department has an id (id="produce"), so other pages can link straight to it:
+  departments.html#produce
+
+  TODO for the store: send photos of the deli, bakery, dairy, frozen, international
+  and household aisles, and confirm the descriptions are accurate.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Departments | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Shop fresh produce, USDA Choice meats, deli, bakery, dairy, frozen foods, international groceries and more at Food Dynasty Supermarket, 1071 Bay St, Staten Island.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html" aria-current="page">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hero-departments">
+      <div class="container">
+        <h1>Everything You Need, Under One Roof</h1>
+        <p>From fresh produce and quality meats to pantry staples and flavors from around the world.</p>
+        <a class="button" href="sales.html">See This Week's Sales</a>
+      </div>
+    </section>
+
+    <!-- ================= FEATURED DEPARTMENTS (with photos) ================= -->
+    <section class="section">
+      <div class="container">
+        <h2>Our Departments</h2>
+
+        <div class="dept-list">
+
+          <!-- Each department is an <article> with an id for direct links -->
+          <article class="dept-card" id="produce">
+            <img src="images/produce.jpg" alt="Fresh fruits and vegetables in the produce section">
+            <div class="dept-text">
+              <h3>Fresh Produce</h3>
+              <p>Crisp vegetables, ripe fruit and fresh herbs, restocked every day. Find everyday favorites alongside tropical and seasonal produce.</p>
+            </div>
+          </article>
+
+          <!-- class="dept-card reverse": the "reverse" modifier puts the photo on the
+               right instead of the left, so the page zig-zags (see styles.css 11d) -->
+          <article class="dept-card reverse" id="meat">
+            <img src="images/meat-department.jpg" alt="USDA Choice beef cuts in the meat case">
+            <div class="dept-text">
+              <h3>Meat &amp; Poultry</h3>
+              <p>USDA Choice beef, pork, chicken and more, cut and packed fresh in store. Look for weekly meat specials throughout the case.</p>
+            </div>
+          </article>
+
+          <article class="dept-card" id="prepared">
+            <img src="images/hot-food.jpg" alt="Ready-to-eat meals packed in the prepared foods case">
+            <div class="dept-text">
+              <h3>Hot Buffet &amp; Prepared Foods</h3>
+              <p>Home-style hot meals made fresh daily, plus ready-to-heat trays to take home.</p>
+              <p><a href="buffet.html">See the buffet menu</a> · <a href="catering.html">Catering</a></p>
+            </div>
+          </article>
+
+          <article class="dept-card reverse" id="grocery">
+            <img src="images/snacks.jpg" alt="Snack aisle stocked with cookies and crackers, with yellow weekly special tags">
+            <div class="dept-text">
+              <h3>Grocery, Snacks &amp; Pantry</h3>
+              <p>Aisles of name brands and everyday essentials: cereal, canned goods, pasta, snacks and more. Watch for the yellow <strong>weekly special</strong> tags.</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MORE DEPARTMENTS (no photos yet) ================= -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2>More to Explore</h2>
+        <!-- .grid-3: 1 column on phones, 2 on tablets, 3 on computers,
+             so 6 cards come out as two even rows of 3 -->
+        <div class="grid-3">
+          <article class="dept-card-simple" id="deli">
+            <h3>Deli</h3>
+            <p>Boar's Head meats and cheeses sliced to order, plus salads and sandwiches.</p>
+          </article>
+          <article class="dept-card-simple" id="bakery">
+            <h3>Bakery</h3>
+            <p>Fresh bread, rolls, cakes and sweet treats.</p>
+          </article>
+          <article class="dept-card-simple" id="dairy">
+            <h3>Dairy &amp; Eggs</h3>
+            <p>Milk, cheese, yogurt, butter and farm-fresh eggs.</p>
+          </article>
+          <article class="dept-card-simple" id="frozen">
+            <h3>Frozen Foods</h3>
+            <p>Frozen meals, vegetables, pizza, ice cream and more.</p>
+          </article>
+          <article class="dept-card-simple" id="international">
+            <h3>International Foods</h3>
+            <p>Flavors from around the world for the many communities we serve.</p>
+          </article>
+          <article class="dept-card-simple" id="household">
+            <h3>Household &amp; Personal Care</h3>
+            <p>Cleaning supplies, paper goods, health and beauty essentials.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section catering">
+      <div class="container">
+        <h2>Save Every Week</h2>
+        <p>New deals in every department, every week.</p>
+        <a class="button" href="sales.html">See Weekly Sales</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

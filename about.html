@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--
+  ABOUT US PAGE
+  Text is based on the old site's About page, shortened.
+  New idea on this page: embedding a Google Map with an <iframe>
+  (an iframe = a window that shows another web page inside ours).
+
+  TODO for the store: add real details that make this page personal, e.g. the year
+  the store opened, the family's story, and what the flags on the roof represent.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Food Dynasty is a family-owned supermarket on Bay Street in Staten Island, offering fresh groceries, a daily hot buffet and catering. Find our hours, address and phone number.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html" aria-current="page">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <h1>Your Family-Owned Neighborhood Market</h1>
+        <p>Proudly serving Staten Island with fresh food, honest prices and service that feels personal.</p>
+      </div>
+    </section>
+
+    <!-- ================= OUR STORY ================= -->
+    <section class="section">
+      <div class="container">
+        <!-- .split: text and photo side by side on bigger screens (styles.css 11f) -->
+        <div class="split">
+          <div class="split-text">
+            <h2>Our Story</h2>
+            <p>Food Dynasty Supermarket is a family-owned business on Bay Street, dedicated to quality, freshness and real value for the families of Staten Island.</p>
+            <p>We're more than a supermarket. Stop in for your weekly groceries, grab a hot meal from our buffet, or let us cater your next event. Everything you need is under one roof.</p>
+            <p>We're grateful to keep growing with the community we call home, and we look forward to serving you for many years to come.</p>
+          </div>
+          <img class="split-img" src="images/store-aisles.jpg" alt="Bright, well-stocked aisles inside Food Dynasty">
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHAT WE STAND FOR ================= -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2>What We Stand For</h2>
+        <div class="grid-3">
+          <article class="save-card">
+            <h3>Freshness</h3>
+            <p>Produce, meat and prepared foods brought in and made fresh every day.</p>
+          </article>
+          <article class="save-card">
+            <h3>Fair Prices</h3>
+            <p>Weekly sales, digital coupons and everyday value for every family.</p>
+          </article>
+          <article class="save-card">
+            <h3>Community</h3>
+            <p>A neighborhood store run by a family, for the neighbors we serve.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISIT US ================= -->
+    <section class="section" id="visit">
+      <div class="container">
+        <h2>Visit Us</h2>
+        <div class="split">
+          <div class="split-text">
+            <h3>Address</h3>
+            <p>1071 Bay St<br>Staten Island, NY 10305</p>
+            <p><a class="button" href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">Get Directions</a></p>
+
+            <h3>Hours</h3>
+            <div class="hours hours-left">
+              <p><strong>Monday – Saturday</strong> <span>7 AM – 9 PM</span></p>
+              <p><strong>Sunday</strong> <span>7 AM – 8 PM</span></p>
+            </div>
+
+            <h3>Phone</h3>
+            <p><a class="phone-link" href="tel:+17188161100">718-816-1100</a></p>
+          </div>
+
+          <!-- GOOGLE MAP EMBED
+               "output=embed" asks Google for a version made to be shown inside other sites.
+               title = a description for screen readers (every iframe needs one).
+               loading="lazy" = don't load the map until the visitor scrolls near it,
+               so the rest of the page loads faster. -->
+          <iframe class="map"
+            src="https://www.google.com/maps?q=Food+Dynasty+Supermarkets,+1071+Bay+St,+Staten+Island,+NY+10305&output=embed"
+            title="Map showing Food Dynasty Supermarket at 1071 Bay St, Staten Island"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="section catering">
+      <div class="container">
+        <h2>Come See Us Soon</h2>
+        <p>Check this week's deals before you visit.</p>
+        <a class="button" href="sales.html">See Weekly Sales</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

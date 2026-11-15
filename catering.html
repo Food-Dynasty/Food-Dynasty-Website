@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<!--
+  CATERING PAGE
+  Same shared parts as the other pages (head, top bar, header, footer).
+  New ideas on this page:
+    1. "Jump links": links that scroll to a section on the SAME page, using id="..."
+    2. Prices laid out next to dish names with flexbox
+    3. <details>: a show/hide box with no JavaScript
+
+  Content source: the full printed catering menu (Catering Menu.pdf), which came from
+  the previous store. All of the old store's names were removed; items that used a
+  name were renamed and are marked "RENAMED". Brand-name references (Peter Luger,
+  Jack Daniel's) were made generic. Prices are from that menu: confirm them with the
+  store before the site goes live.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catering Menu | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Catering from Food Dynasty Supermarket in Staten Island: giant heroes, hot and cold buffet packages, party trays of pasta, chicken, seafood, gluten-free options and more. Call 718-816-1100 to order.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html" aria-current="page">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hero-catering">
+      <div class="container">
+        <h1>Catering for Every Occasion</h1>
+        <p>Party trays, giant heroes and full buffet packages for birthdays, office parties, holidays and family gatherings.</p>
+        <a class="button" href="tel:+17188161100">Call to Order: 718-816-1100</a>
+      </div>
+    </section>
+
+    <!-- HOW TO ORDER: simple numbered steps = an ordered list <ol> -->
+    <section class="section">
+      <div class="container">
+        <h2>How to Order</h2>
+        <ol class="steps">
+          <li><strong>Pick your food</strong> from the menu below.</li>
+          <li><strong>Call us</strong> at <a href="tel:+17188161100">718-816-1100</a> or stop by the deli counter. A 50% deposit holds your order.</li>
+          <li><strong>Pick up</strong> your order at 1071 Bay St, ready to heat and serve.</li>
+        </ol>
+        <p class="menu-note">Need to change or cancel? Let us know at least <strong>3 days</strong> before pickup. <a href="#policies">See all ordering policies</a>.</p>
+      </div>
+    </section>
+
+    <!-- JUMP LINKS: href="#pasta" scrolls to the element with id="pasta" on this page -->
+    <nav class="category-nav" aria-label="Catering menu sections">
+      <div class="container">
+        <ul>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#heroes">Giant Heroes</a></li>
+          <li><a href="#hot-platters">Hot Platters</a></li>
+          <li><a href="#cold-platters">Cold Platters</a></li>
+          <li><a href="#pasta">Pasta</a></li>
+          <li><a href="#eggplant">Eggplant</a></li>
+          <li><a href="#chicken">Chicken</a></li>
+          <li><a href="#beef">Beef</a></li>
+          <li><a href="#pork">Pork</a></li>
+          <li><a href="#seafood">Seafood</a></li>
+          <li><a href="#gluten-free">Gluten-Free</a></li>
+          <li><a href="#sides">Sides</a></li>
+          <li><a href="#breakfast">Breakfast</a></li>
+          <li><a href="#salads">Salads</a></li>
+          <li><a href="#kids">Kids</a></li>
+          <li><a href="#bakery">Bakery</a></li>
+          <li><a href="#policies">Policies</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ================= PACKAGES ================= -->
+    <section class="section section-alt" id="packages">
+      <div class="container">
+        <h2>Buffet Packages</h2>
+        <p class="menu-note">Priced per person, plus tax. Minimum 20 people.</p>
+
+        <div class="card-grid">
+
+          <article class="package-card">
+            <h3>Hot Buffet</h3>
+            <p class="package-price">$15 <span>per person</span></p>
+            <p>Choice of <strong>1 pasta, 3 entrées and 1 eggplant dish</strong>.</p>
+            <p>Includes tossed salad, grated cheese, dinner rolls, extra sauce, plates, utensils, napkins, serving spoons, tablecloths, racks, sternos and water pans.</p>
+          </article>
+
+          <article class="package-card">
+            <h3>Deluxe Hot Buffet</h3>
+            <p class="package-price">$17 <span>per person</span></p>
+            <p>Choice of <strong>2 pastas, 1 side dish, 3 entrées and 1 eggplant dish</strong>.</p>
+            <p>Includes everything in the Hot Buffet.</p>
+          </article>
+
+          <article class="package-card">
+            <h3>Cold Buffet</h3>
+            <p class="package-price">$11.99 <span>per person</span></p>
+            <p>Cold cut platter with your choice of <strong>4 meats and 2 cheeses</strong>. Boar's Head and Alpine Lace low-salt and low-fat options available.</p>
+            <p>Includes fresh rolls, rye and white bread, potato salad, macaroni salad, coleslaw, condiments, plates, utensils and tablecloth.</p>
+          </article>
+
+          <article class="package-card">
+            <!-- RENAMED: was "[old store] Breakfast Buffet" -->
+            <h3>Breakfast Buffet</h3>
+            <p class="package-price">$14 <span>per person</span></p>
+            <p>Muffins, danishes, bagels, croissants, coffee, tea and fresh orange juice, plus <strong>1 choice</strong> of home fries, bacon or sausage and <strong>2 choices</strong> of French toast, pancakes, scrambled eggs or an overstuffed breakfast wrap.</p>
+          </article>
+
+        </div>
+
+        <!-- <details> is a built-in show/hide box: no JavaScript needed.
+             The <summary> is the part you click. -->
+        <details class="info-box">
+          <summary>Cold buffet meat &amp; cheese options</summary>
+          <p><strong>Meats:</strong> Roast Beef, Turkey Breast, Virginia Ham, Roast Pork, Boiled Ham, Salami, Capicola, Pepperoni, Mortadella</p>
+          <p><strong>Cheeses:</strong> Swiss, American, Mozzarella, Alpine Lace Provolone, Imported Auricchio Provolone, Jarlsberg, Muenster, Pepper Jack, Alpine Lace Swiss, Alpine Lace Muenster</p>
+        </details>
+
+        <details class="info-box">
+          <summary>Upgrades, heating instructions &amp; deposits</summary>
+          <p><strong>Upgrades:</strong> fish $2 more per person. Filet mignon, skirt steak or short ribs $3 more per person. Ask about gluten-free options.</p>
+          <p><strong>Heating:</strong> all hot trays come fully cooked. Preheat the oven to 350°F and heat for 30 minutes. If using chafing racks, heat for 2 hours.</p>
+          <p><strong>Deposits:</strong> racks and water pans require a deposit, fully refunded when returned within 1 week.</p>
+        </details>
+
+        <!-- RENAMED: was "[old store]'s Continental Breakfast" -->
+        <p class="menu-note">Smaller breakfast? Our <strong>Continental Breakfast</strong> (muffins, danishes, bagels, croissants, fresh fruit, coffee, tea and orange juice) is $10 per person, minimum 20, paper goods included.</p>
+      </div>
+    </section>
+
+    <!-- ================= GIANT HEROES ================= -->
+    <section class="section menu-section" id="heroes">
+      <div class="container">
+        <h2>Giant Heroes</h2>
+        <p class="price-line">3 ft $75 · 4 ft $100 · 5 ft $125 · 6 ft $140</p>
+
+        <div class="menu-items">
+          <article class="menu-item">
+            <h3>Grilled Chicken</h3>
+            <p>Marinated grilled chicken breast, thinly sliced, with fresh mozzarella and fire-roasted peppers. Oil &amp; balsamic on the side.</p>
+          </article>
+          <article class="menu-item">
+            <h3>American Hero</h3>
+            <p>Boar's Head roast beef, turkey and Virginia ham with American and Swiss cheese, lettuce and tomato. Mayo and mustard on the side.</p>
+          </article>
+          <article class="menu-item">
+            <h3>Italian Hero</h3>
+            <p>Genoa salami, mortadella, pepperoni, ham capicola, provolone and fresh mozzarella with roasted peppers and greens. Oil &amp; balsamic on the side.</p>
+          </article>
+          <article class="menu-item">
+            <h3>Chicken Cutlet Hero</h3>
+            <p>Chicken cutlets with fresh mozzarella, fire-roasted peppers and baby field greens. Oil &amp; balsamic on the side.</p>
+          </article>
+          <article class="menu-item">
+            <h3>Vegetarian Delight</h3>
+            <p>Sautéed broccoli rabe, grilled eggplant, fresh mozzarella and roasted peppers. Oil &amp; balsamic on the side.</p>
+          </article>
+          <article class="menu-item">
+            <h3>Eggplant Hero</h3>
+            <p>Crispy panko-crusted eggplant, fresh mozzarella, roasted peppers and lettuce, with homemade balsamic on the side.</p>
+          </article>
+          <article class="menu-item">
+            <!-- This item has its OWN price, so it gets the .menu-item-head layout -->
+            <div class="menu-item-head">
+              <h3>Build Your Own</h3>
+              <span class="price">$29.99/ft</span>
+            </div>
+            <p>Your choice of fillings. Prosciutto not included.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOT PLATTERS =================
+         Two sizes now: the price shows "small / large" -->
+    <section class="section section-alt menu-section" id="hot-platters">
+      <div class="container">
+        <h2>Hot Platters</h2>
+        <p class="price-line">Prices: small platter / large platter</p>
+        <div class="menu-items">
+          <article class="menu-item">
+            <!-- "Jack Daniels BBQ" made generic (it's another company's brand name) -->
+            <div class="menu-item-head"><h3>Chicken Wings</h3><span class="price">$60 / $100</span></div>
+            <p>Seasoned fried wings with your choice of honey BBQ, whiskey BBQ or Buffalo sauce.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Boneless Wings</h3><span class="price">$60 / $100</span></div>
+            <p>Choice of Buffalo, garlic parmesan, honey BBQ or chipotle.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Hot Antipasto</h3><span class="price">$70 / $100</span></div>
+            <p>Eggplant rollatini, mozzarella sticks, stuffed mushroom caps, baked little neck clams, fried broccoli, zucchini sticks and mini rice balls, with marinara and lemon.</p>
+          </article>
+          <article class="menu-item">
+            <!-- RENAMED: was "[old store]'s Over The Top Hot Antipasto Platter" -->
+            <div class="menu-item-head"><h3>Deluxe Hot Antipasto</h3><span class="price">$80 / $120</span></div>
+            <p>Eggplant rollatini, fresh mozzarella sticks, homemade rice balls, baked clams, crabmeat-stuffed mushrooms, zucchini sticks and coconut shrimp, with marinara and lemon.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Mini Fried Finger Foods</h3><span class="price">$60 / $90</span></div>
+            <p>Mini rice balls, potato croquettes, prosciutto balls, fried cheese ravioli and mozzarella sticks, with marinara.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Mini Quesadillas</h3><span class="price">$60 / $90</span></div>
+            <p>Chicken, beef and vegetable quesadillas with sour cream and guacamole.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Pigs in a Blanket</h3><span class="price">$60 / $80</span></div>
+            <p>Cocktail franks in puff pastry with deli mustard.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Stuffed Mushrooms</h3><span class="price">$50 / $80</span></div>
+            <p>Cremini mushrooms filled with homemade crabmeat stuffing.</p>
+          </article>
+          <article class="menu-item">
+            <!-- "Peter Luger" made generic (it's a famous steakhouse's name) -->
+            <div class="menu-item-head"><h3>Mini Sliders</h3><span class="price">$60 / $100</span></div>
+            <p>A mix of classic, steakhouse-style and chicken sliders on potato buns.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COLD PLATTERS ================= -->
+    <section class="section menu-section" id="cold-platters">
+      <div class="container">
+        <h2>Cold Platters</h2>
+        <p class="price-line">Prices: small platter / large platter</p>
+        <div class="menu-items">
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Grilled Vegetables</h3><span class="price">$60 / $80</span></div>
+            <p>Marinated grilled eggplant, portobello caps, zucchini, bell peppers and asparagus with balsamic glaze.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Cold Antipasto</h3><span class="price">$70 / $100</span></div>
+            <p>Roasted peppers, marinated olives and artichokes, provolone, mozzarella bocconcini, sweet soppressata and pepperoni.</p>
+          </article>
+          <article class="menu-item">
+            <!-- RENAMED: was "Tom's Antipasto Platter" -->
+            <div class="menu-item-head"><h3>Premium Antipasto</h3><span class="price">$80 / $120</span></div>
+            <p>Sweet and hot soppressata, marinated mushrooms, sun-dried peppers, mozzarella bocconcini, artichokes and Parmigiano Reggiano.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Fresh Vegetables &amp; Dip</h3><span class="price">$50 / $70</span></div>
+            <p>Broccoli, celery, cucumber, carrots, cauliflower, cherry tomatoes and zucchini with vegetable dip.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Caprese</h3><span class="price">$60 / $90</span></div>
+            <p>Fresh mozzarella, heirloom tomatoes and basil with extra virgin olive oil.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Finger Sandwiches</h3><span class="price">$60 / $100</span></div>
+            <p>Semolina dinner rolls with your choice of cold cuts and condiments.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Assorted Wraps</h3><span class="price">$70 / $100</span></div>
+            <p>Any three: tuna salad, seafood salad, crispy chicken &amp; mozzarella, grilled eggplant &amp; pesto, grilled veggies &amp; feta, turkey BLT, or roast beef &amp; Swiss.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>International Cheese</h3><span class="price">$60 / $90</span></div>
+            <p>Imported and domestic cheeses with grapes and strawberries.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Fresh Fruit Bowl</h3><span class="price">$60 / $80</span></div>
+            <p>Fresh-cut seasonal fruit and berries.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Shrimp Cocktail</h3><span class="price">$80 / $120</span></div>
+            <p>Poached jumbo shrimp with lemon and homemade cocktail sauce.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Artisan Sandwiches</h3><span class="price">$80 / $110</span></div>
+            <p>Mini baguettes with your choice of cold cut combinations.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Cold Cut Platter</h3><span class="price">$70 / $100</span></div>
+            <p>Your choice of four meats and two cheeses.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Panini Platter</h3><span class="price">$70 / $120</span></div>
+            <p>Choice of three: chicken cutlet &amp; mozzarella, grilled veggies, grilled chicken &amp; pesto, prosciutto &amp; mozzarella, or roast beef &amp; Swiss with chipotle mustard.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Guacamole &amp; Tortilla Chips</h3><span class="price">$40</span></div>
+            <p>Homemade guacamole. One size.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Spinach &amp; Artichoke Dip</h3><span class="price">$40</span></div>
+            <p>Baby spinach, artichoke hearts, asiago and parmesan with herb tortilla chips. One size.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRAYS =================
+         One half/full tray price for most dishes in each category,
+         so each dish is just a name in a list. -->
+    <section class="section section-alt menu-section" id="pasta">
+      <div class="container">
+        <h2>Pasta</h2>
+        <p class="price-line">Half tray $50 · Full tray $80</p>
+        <ul class="tray-list">
+          <li>Linguine &amp; Clams <span>red or white sauce</span></li>
+          <li>Stuffed Shells</li>
+          <li>Baked Ziti</li>
+          <li>Meat Lasagna</li>
+          <li>Cheese Lasagna</li>
+          <li>Rigatoni alla Vodka <span>with prosciutto &amp; peas</span></li>
+          <li>Penne alla Vodka</li>
+          <li>Rigatoni di Pomodoro</li>
+          <li>Pasta Primavera</li>
+          <li>Bowtie Pasta <span>eggplant &amp; sun-dried tomato</span></li>
+          <li>Penne with Broccoli Rabe</li>
+          <li>Penne with Broccoli</li>
+          <li>Penne with Wild Mushrooms <span>cognac cream</span></li>
+          <li>Rigatoni Bolognese</li>
+          <li>Rigatoni Confetti <span>prosciutto, peas &amp; shiitake</span></li>
+          <li>Cavatelli with Broccoli</li>
+          <li>Tricolor Tortellini</li>
+          <li>Ravioli Marinara</li>
+          <li>Orecchiette <span>with broccoli rabe &amp; sausage</span></li>
+          <li>Linguine with Garlic &amp; Oil</li>
+          <li>Four-Cheese Baked Mac &amp; Cheese</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="eggplant">
+      <div class="container">
+        <h2>Eggplant</h2>
+        <p class="price-line">Half tray $50 · Full tray $70</p>
+        <ul class="tray-list">
+          <li>Eggplant Parmigiana</li>
+          <li>Eggplant Rollatini</li>
+          <li>Eggplant Rolled with Spinach</li>
+          <li>Eggplant with White Sauce <span>tomato, mozzarella, garlic &amp; white wine</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section-alt menu-section" id="chicken">
+      <div class="container">
+        <h2>Chicken</h2>
+        <p class="price-line">Half tray $70 · Full tray $100</p>
+        <ul class="tray-list">
+          <li>Chicken Fingers</li>
+          <li>Chicken Cutlet Parmesan</li>
+          <li>Chicken Francaise</li>
+          <li>Chicken Marsala</li>
+          <li>Chicken Rollatini</li>
+          <li>Chicken Oreganato</li>
+          <li>Chicken &amp; Broccoli</li>
+          <li>Stuffed Chicken Breast</li>
+          <li>Chicken Cordon Bleu</li>
+          <li>Chicken Sorrentino</li>
+          <li>Chicken Teriyaki</li>
+          <li>Grilled Chicken &amp; Vegetables</li>
+          <li>Chicken &amp; Artichokes</li>
+          <li>Chicken Bianco</li>
+          <li>Chicken Arrabiata</li>
+          <li>Sesame Chicken</li>
+          <li>Bacon-Wrapped Chicken</li>
+          <li>Stuffed Chicken in Fig Sauce</li>
+          <li>Chicken Cacciatore</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="beef">
+      <div class="container">
+        <h2>Beef</h2>
+        <p class="price-line">Half tray $70 · Full tray $100</p>
+        <ul class="tray-list">
+          <li>Pepper Steak</li>
+          <li>Meatballs in Sauce</li>
+          <li>Roast Beef with Mushroom Gravy</li>
+          <li>Beef Teriyaki</li>
+          <li>Beef &amp; Broccoli</li>
+          <li>Beef Rollatini</li>
+          <!-- These three cost more, so their prices are shown on the line itself -->
+          <li>Braised Short Ribs <span>half $80 · full $110</span></li>
+          <li>Beef Medallions <span>half $90 · full $160</span></li>
+          <li>Grilled Skirt Steak <span>half $100 · full $180</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section-alt menu-section" id="pork">
+      <div class="container">
+        <h2>Pork</h2>
+        <p class="price-line">Half tray $70 · Full tray $100</p>
+        <ul class="tray-list">
+          <li>Sausage &amp; Peppers <span>sweet or hot</span></li>
+          <li>Sausage &amp; Broccoli Rabe</li>
+          <li>Baked Virginia Ham</li>
+          <li>Stuffed Loin of Pork</li>
+          <li>Pork Rollatini</li>
+          <li>Hawaiian Roast Pork</li>
+          <li>Pork &amp; Mushrooms</li>
+          <li>BBQ Ribs</li>
+          <li>Boneless Pork Chops <span>with cherry peppers</span></li>
+          <li>Pork Cutlet Parmesan</li>
+          <li>Pork Filet Marsala</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="seafood">
+      <div class="container">
+        <h2>Seafood</h2>
+        <p class="price-line">Half tray $80 · Full tray $120</p>
+        <ul class="tray-list">
+          <li>Calamari Marinara</li>
+          <li>Fried Calamari</li>
+          <li>Sweet &amp; Sour Calamari</li>
+          <li>Zuppa di Mussels</li>
+          <li>Shrimp in Butter Sauce</li>
+          <li>Shrimp Parmesan</li>
+          <li>Panko-Crusted Shrimp</li>
+          <li>Stuffed Fillet of Sole</li>
+          <li>Spicy Tomato Glazed Salmon</li>
+          <li>Tilapia &amp; Broccoli Rabe</li>
+          <li>Beer-Battered Fried Tilapia</li>
+          <li>Lobster Fra Diavolo <span>market price</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= GLUTEN-FREE ================= -->
+    <section class="section section-alt menu-section" id="gluten-free">
+      <div class="container">
+        <h2>Gluten-Free Options</h2>
+        <p class="price-line">Prices: half tray / full tray</p>
+        <div class="menu-items">
+          <article class="menu-item"><div class="menu-item-head"><h3>Penne alla Vodka</h3><span class="price">$60 / $90</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Rigatoni di Pomodoro</h3><span class="price">$60 / $90</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Chicken Francaise</h3><span class="price">$80 / $110</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Chicken Cutlet Parmigiana</h3><span class="price">$80 / $110</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Grilled Chicken</h3><span class="price">$80 / $110</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Eggplant Parmigiana</h3><span class="price">$60 / $90</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Sausage &amp; Peppers</h3><span class="price">$80 / $110</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Pepper Steak</h3><span class="price">$80 / $100</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Grilled Skirt Steak</h3><span class="price">$100 / $180</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>String Bean Almondine</h3><span class="price">$60 / $90</span></div></article>
+          <article class="menu-item"><div class="menu-item-head"><h3>Broccoli Rabe</h3><span class="price">$60 / $90</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="sides">
+      <div class="container">
+        <h2>Side Dishes</h2>
+        <p class="price-line">Half tray $50 · Full tray $80</p>
+        <ul class="tray-list">
+          <li>Broccoli Oreganato</li>
+          <li>Broccoli with Garlic &amp; Oil</li>
+          <li>Broccoli Rabe</li>
+          <li>Baby Carrots in Butter Sauce</li>
+          <li>String Bean Almondine</li>
+          <li>Sautéed Spinach</li>
+          <li>Sautéed Peas &amp; Mushrooms</li>
+          <li>Wild Mushrooms</li>
+          <li>Whipped Potatoes</li>
+          <li>Roasted Potatoes</li>
+          <li>Mashed Sweet Potatoes</li>
+          <li>Roasted Vegetables</li>
+          <li>Pearl Couscous</li>
+          <li>Mini Rice Balls, Prosciutto Balls or Potato Croquettes <span>mix &amp; match</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= BREAKFAST ================= -->
+    <section class="section section-alt menu-section" id="breakfast">
+      <div class="container">
+        <h2>Breakfast</h2>
+        <p class="menu-note">For breakfast buffets priced per person, see <a href="#packages">Packages</a>.</p>
+        <div class="menu-items">
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Breakfast Bar</h3><span class="price">$50</span></div>
+            <p>Strawberry or vanilla yogurt, granola, strawberries, blueberries, sliced almonds and chocolate chips. Includes cups and spoons.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Breakfast Basket</h3><span class="price">$60</span></div>
+            <p>Assorted muffins, croissants and crumb cake danishes.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SALADS ================= -->
+    <section class="section menu-section" id="salads">
+      <div class="container">
+        <h2>Salads</h2>
+        <p class="price-line">Small bowl $40 · Large bowl $70 · Dressing on the side</p>
+        <ul class="tray-list">
+          <li>Tossed Salad</li>
+          <li>Caesar Salad <span>with or without chicken</span></li>
+          <!-- RENAMED: was "Danielle Salad" -->
+          <li>Arugula &amp; Orange Salad <span>walnuts, goat cheese</span></li>
+          <!-- RENAMED: was "[old store]'s Special Salad" -->
+          <li>House Special Salad</li>
+          <li>Waldorf Salad</li>
+          <li>Chef Salad</li>
+          <!-- RENAMED: was "Amboy Special Salad" -->
+          <li>Arugula, Pear &amp; Fig Salad</li>
+          <li>Mediterranean Salad</li>
+          <li>Mediterranean Pasta Salad</li>
+          <li>Cavatelli Pesto Salad</li>
+          <li>Gentleman's Bowtie <span>sun-dried tomato &amp; eggplant</span></li>
+          <li>Tri-Color Tortellini Salad</li>
+          <li>Farfalle with Prosciutto &amp; Basil</li>
+          <!-- RENAMED: was "Enny Benny's Salad" -->
+          <li>Southwest Bowtie Salad <span>black beans, corn, avocado</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= KIDS & BAKERY ================= -->
+    <section class="section section-alt menu-section" id="kids">
+      <div class="container">
+        <h2>Kids Corner</h2>
+        <p class="price-line">Half tray $40 · Full tray $70</p>
+        <ul class="tray-list">
+          <li>Chicken Fingers</li>
+          <li>Mac &amp; Cheese</li>
+          <li>French Fries</li>
+          <li>Spaghetti &amp; Meatballs</li>
+          <li>Mozzarella Sticks</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="bakery">
+      <div class="container">
+        <h2>Bakery</h2>
+        <p class="price-line">Prices: small / large</p>
+        <div class="menu-items">
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Brownie &amp; Cannoli Platter</h3><span class="price">$70 / $100</span></div>
+            <p>Homemade cannolis and chocolate brownies dusted with powdered sugar.</p>
+          </article>
+          <article class="menu-item">
+            <!-- RENAMED: was "[old store] Cookie Tray" -->
+            <div class="menu-item-head"><h3>Cookie Tray</h3><span class="price">$70 / $90</span></div>
+            <p>Mini black &amp; white, lemon drop, cannoli and 7-layer cookies.</p>
+          </article>
+          <article class="menu-item">
+            <div class="menu-item-head"><h3>Assorted Mini Pastries</h3><span class="price">$80 / $100</span></div>
+            <p>Mini cannolis, eclairs, cream puffs, red velvet, carrot cake and napoleons.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= POLICIES ================= -->
+    <section class="section section-alt menu-section" id="policies">
+      <div class="container">
+        <h2>Ordering Policies</h2>
+        <ul class="policy-list">
+          <li>A <strong>50% deposit</strong> is required on all orders. Final payment in cash or credit card.</li>
+          <li>Changes or cancellations must be made <strong>at least 3 days</strong> before pickup or delivery.</li>
+          <li>Credit card orders that are cancelled have a <strong>10% cancellation fee</strong>.</li>
+          <li>Rack and board deposits are fully refunded when returned within 1 week.</li>
+          <li>All prices are subject to NYS sales tax and may change.</li>
+        </ul>
+        <!-- The printed menu also offered "party planning needs" (tables, chairs, tents,
+             linens, bartenders). Left off until the store confirms it still offers them. -->
+      </div>
+    </section>
+
+    <section class="section catering">
+      <div class="container">
+        <h2>Ready to Order?</h2>
+        <p>Call us or stop by the deli counter and we'll help plan the perfect spread.</p>
+        <a class="button" href="tel:+17188161100">Call 718-816-1100</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

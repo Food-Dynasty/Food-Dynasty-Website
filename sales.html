@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!--
+  WEEKLY SALES PAGE
+  Our site is the "home base"; the full weekly ad lives on Key Food's site.
+  The link below is Key Food's PERMANENT page for this store (store #2697): it always
+  shows the current week's ad, so this page never needs a new link.
+
+  Links to other websites use:
+    target="_blank"  -> opens in a new tab, so our site stays open in the old tab
+    rel="noopener"   -> a security setting: the new tab can't control our page
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Sales | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="This week's deals at Food Dynasty Supermarket in Staten Island: see the weekly ad, clip digital coupons and save on groceries, meat and produce.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html" aria-current="page">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero hero-sales">
+      <div class="container">
+        <h1>This Week's Sales</h1>
+        <!-- The current ad ran Fri Nov 13 – Thu Nov 19, 2026. Confirm with the store
+             which day new deals start, then keep this sentence accurate. -->
+        <p>New deals every week on produce, meat, dairy and pantry staples.</p>
+        <a class="button" href="https://www.keyfood.com/stores/2697/flyers" target="_blank" rel="noopener">See This Week's Full Ad</a>
+        <p class="hero-small">Opens our weekly ad on keyfood.com in a new tab.</p>
+      </div>
+    </section>
+
+    <!-- ================= 3 WAYS TO SAVE ================= -->
+    <section class="section">
+      <div class="container">
+        <h2>3 Ways to Save</h2>
+        <!-- 3 cards. .card-grid would make 4 columns on computers, so this uses
+             .grid-3 instead (3 columns, see styles.css 11e). -->
+        <div class="grid-3">
+
+          <article class="save-card">
+            <!-- The number is just text styled into a yellow circle by CSS -->
+            <span class="save-number">1</span>
+            <h3>Check the Weekly Ad</h3>
+            <p>Hundreds of deals across the store, updated every week.</p>
+            <a class="button" href="https://www.keyfood.com/stores/2697/flyers" target="_blank" rel="noopener">View Weekly Ad</a>
+          </article>
+
+          <article class="save-card">
+            <span class="save-number">2</span>
+            <h3>Clip Digital Coupons</h3>
+            <p>Load coupons to your free Key Food account, then save automatically at the register.</p>
+            <a class="button" href="https://www.keyfood.com/coupons" target="_blank" rel="noopener">Get Coupons</a>
+          </article>
+
+          <article class="save-card">
+            <span class="save-number">3</span>
+            <h3>Look for Yellow Tags</h3>
+            <p>In the store, the yellow <strong>weekly special</strong> tags mark this week's deals right on the shelf.</p>
+            <a class="button button-dark" href="departments.html">Browse Departments</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TOP DEALS (turned off) =================
+         This section is "commented out" so it doesn't show on the page.
+         To use it: remove the comment marks around it, then each week replace the
+         items and prices with 4 deals from the new ad. Only turn it on if someone
+         will update it EVERY week; old prices on the site are worse than none.
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Top Deals This Week</h2>
+        <p class="menu-note">Valid Fri Nov 13 – Thu Nov 19</p>
+        <div class="card-grid">
+          <article class="deal-card">
+            <p class="deal-price">$6.99<span>/lb</span></p>
+            <h3>Beef Chuck for Stew</h3>
+          </article>
+          ...3 more deal-cards...
+        </div>
+      </div>
+    </section>
+    -->
+
+    <!-- ================= APP ================= -->
+    <section class="section section-alt">
+      <div class="container app-section">
+        <h2>Get the Key Food App</h2>
+        <p>Set <strong>Food Dynasty, 1071 Bay Street</strong> as your store to see our ad, clip coupons and build a shopping list on your phone.</p>
+        <a class="button button-dark" href="https://apps.apple.com/us/app/id6752782530" target="_blank" rel="noopener">Download for iPhone</a>
+        <a class="button button-dark" href="https://play.google.com/store/apps/details?id=com.keyfood.keyfoodfamily" target="_blank" rel="noopener">Download for Android</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

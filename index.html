@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--
+  Hi! This is a COMMENT. The browser ignores anything between these marks.
+  We use comments to leave notes for ourselves (and for interviewers reading your code).
+
+  This file is the homepage. Browsers automatically look for a file named
+  "index.html" when someone visits a website, so the homepage always gets this name.
+
+  NEW IN STEP 2: class="..." attributes. A class is a label we invent, like
+  class="card". The CSS file (css/styles.css) uses these labels to decide how
+  things look. One element can have several classes: class="button button-outline".
+-->
+
+<!-- <html> wraps the whole page. lang="en" tells browsers and screen readers it's in English. -->
+<html lang="en">
+
+<!-- ===================== HEAD =====================
+     The <head> is information ABOUT the page. None of it shows up on the page itself. -->
+<head>
+  <!-- Lets the page show any character correctly (accents, emojis, etc.) -->
+  <meta charset="UTF-8">
+
+  <!-- Makes the page fit phone screens instead of showing a tiny zoomed-out desktop page -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- The text in the browser tab AND the blue link title in Google results -->
+  <title>Food Dynasty Supermarket | Groceries, Hot Buffet &amp; Catering in Staten Island</title>
+
+  <!-- The grey summary under your link in Google results (the old site was missing this) -->
+  <meta name="description" content="Family-owned supermarket at 1071 Bay St, Staten Island. Fresh groceries, a hot buffet made daily, and catering for any event. Open 7 days a week.">
+
+  <!-- NEW: load the "Poppins" font from Google Fonts (free). The CSS then uses it. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+
+  <!-- NEW: connect our own stylesheet. Without this line, the CSS file does nothing. -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<!-- ===================== BODY =====================
+     Everything inside <body> is what visitors actually see. -->
+<body>
+
+  <!-- NEW: a thin yellow bar at the very top with the info people look for most. -->
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <!-- <header> = the top of the page: logo and navigation menu -->
+  <header class="site-header">
+    <!-- <div> is a plain box with no meaning of its own. We use it here only so CSS can
+         center the content (see .container in styles.css). -->
+    <div class="container">
+      <!-- The logo links back to the homepage, a convention visitors expect.
+           alt = a description for screen readers and Google. Every image needs one. -->
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+
+      <!-- <nav> = a group of navigation links. <ul> = a list, <li> = one item.
+           aria-current="page" marks the page you're on (CSS highlights it in yellow,
+           and screen readers announce "current page"). -->
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- <main> = the main content of this page. Each page should have exactly one. -->
+  <main>
+
+    <!-- HERO: the big banner people see first. The store photo is now set as the
+         background in the CSS (.hero), so it's no longer an <img> here. -->
+    <section class="hero">
+      <div class="container">
+        <!-- "Eyebrow": a small line ABOVE the headline. It keeps the friendly welcome
+             without using up the h1, which should say what the store IS
+             (that's also what Google reads first). -->
+        <p class="eyebrow">Welcome to Food Dynasty</p>
+
+        <!-- <h1> = the most important heading. Use ONE per page.
+             (The old site had three, all in the footer — Google found that confusing.) -->
+        <h1>Your Neighborhood Supermarket on Bay Street</h1>
+
+        <p>Fresh produce, quality meats, hot meals made daily and catering for every occasion. Family owned and proudly serving Staten Island.</p>
+
+        <!-- "tel:" links open the phone dialer on a phone.
+             The directions link is a Google Maps "share" link (from the Share button
+             in Google Maps) that opens the store's exact listing. -->
+        <a class="button" href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">Get Directions</a>
+        <a class="button button-outline" href="tel:+17188161100">Call 718-816-1100</a>
+      </div>
+    </section>
+
+    <!-- <h2> = a sub-heading, one level below h1. Headings go in order like an outline:
+         h1 > h2 > h3. Don't skip levels just to get a bigger or smaller font. -->
+    <section class="section">
+      <div class="container">
+        <h2>Store Hours</h2>
+        <div class="hours">
+          <p><strong>Monday – Saturday</strong> <span>7 AM – 9 PM</span></p>
+          <p><strong>Sunday</strong> <span>7 AM – 8 PM</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: weekly deals get a spot near the top. Savings are the #1 reason
+         people visit a supermarket's website. -->
+    <section class="section sales-band">
+      <div class="container">
+        <h2>This Week's Deals</h2>
+        <p>New savings every week on produce, meat, dairy and pantry staples.</p>
+        <a class="button" href="sales.html">See Weekly Sales</a>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>What You'll Find</h2>
+
+        <!-- Each department is a "card": photo, heading, short text.
+             The CSS grid (.card-grid) arranges them into columns automatically. -->
+        <div class="card-grid">
+
+          <!-- <article> = a self-contained piece of content, a good fit for a card -->
+          <article class="card">
+            <img src="images/produce.jpg" alt="Fresh fruits and vegetables on display">
+            <h3>Fresh Produce</h3>
+            <p>Fruits and vegetables delivered fresh, every day. <a href="departments.html#produce">More</a></p>
+          </article>
+
+          <article class="card">
+            <img src="images/meat-department.jpg" alt="Fresh cuts in the meat department">
+            <h3>Meat Department</h3>
+            <p>USDA Choice beef, pork and chicken at fair prices. <a href="departments.html#meat">More</a></p>
+          </article>
+
+          <article class="card">
+            <img src="images/hot-food.jpg" alt="Hot dishes in the buffet">
+            <h3>Hot Buffet</h3>
+            <p>Ribs, chicken parm, salmon, soups and more. The menu changes daily! <a href="buffet.html">See the menu</a></p>
+          </article>
+
+          <article class="card">
+            <img src="images/store-aisles.jpg" alt="Well-stocked grocery aisles inside the store">
+            <h3>Groceries &amp; Snacks</h3>
+            <p>Everyday essentials and international favorites in every aisle. <a href="departments.html#grocery">More</a></p>
+          </article>
+
+        </div>
+
+        <!-- "center-button" just centers the button under the grid -->
+        <p class="center-button">
+          <a class="button button-dark" href="departments.html">Shop All Departments</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section catering">
+      <div class="container">
+        <h2>Catering for Any Event</h2>
+        <p>Birthdays, office parties, family gatherings: let us handle the food.</p>
+        <a class="button" href="catering.html">View Catering Options</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- <footer> = the bottom of the page. Contact info usually goes here.
+       <address> is the proper tag for contact details. -->
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <!-- &copy; is a special code for the © symbol -->
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

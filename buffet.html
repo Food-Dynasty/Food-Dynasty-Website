@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+  BUFFET MENU PAGE
+  This page was made by copying index.html. The <head>, top bar, header and footer
+  are the same on every page; only the <title>, description, the highlighted menu
+  link, and the content inside <main> change.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CHANGED: every page needs its OWN title and description, so Google can tell them apart -->
+  <title>Hot Buffet Menu | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Hot buffet made fresh daily at Food Dynasty Supermarket on Bay St, Staten Island: ribs, chicken parm, salmon, homemade soups, sides and more.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <!-- CHANGED: aria-current="page" moved from Home to Buffet Menu,
+               so "Buffet Menu" is the one highlighted in yellow on this page -->
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html" aria-current="page">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO: same .hero style as the homepage, plus a second class "hero-buffet"
+         that swaps the background photo (see section 13 in styles.css).
+         Reusing a style and changing just one thing = a "modifier" class. -->
+    <section class="hero hero-buffet">
+      <div class="container">
+        <h1>Hot Buffet Menu</h1>
+        <p>Home-style dishes made fresh every day. Grab a plate for lunch or take dinner home for the family.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+
+        <!-- A short note so customers aren't disappointed if a dish isn't there today -->
+        <p class="menu-note">Our menu changes daily, so not every dish is available every day. Call <a href="tel:+17188161100">718-816-1100</a> to ask what's hot today!</p>
+
+        <!-- The 4 categories reuse .card-grid from the homepage (4 columns on computers,
+             2 on tablets, 1 on phones). Each category is a .menu-card. -->
+        <div class="card-grid">
+
+          <article class="menu-card">
+            <!-- h2 here (not h3) because these are the main sections under the page's h1 -->
+            <h2>Meats</h2>
+            <ul>
+              <li>Pork Ribs</li>
+              <li>Chicken Parmesan</li>
+              <li>Pepper Steak</li>
+              <li>Sausage and Peppers</li>
+              <li>Baked Chicken</li>
+              <li>Lasagna</li>
+            </ul>
+          </article>
+
+          <article class="menu-card">
+            <h2>Seafood &amp; Pasta</h2>
+            <ul>
+              <li>Salmon</li>
+              <li>Tilapia</li>
+              <li>Basa</li>
+              <li>Shrimp</li>
+            </ul>
+          </article>
+
+          <article class="menu-card">
+            <h2>Hot Soups</h2>
+            <ul>
+              <li>Chicken Noodle</li>
+              <li>Shrimp with Corn</li>
+              <li>Italian Wedding</li>
+              <li>Split Pea</li>
+              <li>Lentil with Bacon</li>
+            </ul>
+          </article>
+
+          <article class="menu-card">
+            <h2>Sides</h2>
+            <ul>
+              <li>Mashed Potatoes</li>
+              <li>Rice</li>
+              <li>Beans</li>
+              <li>Mixed Vegetables</li>
+              <li>Pasta</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Reuses the yellow .catering band from the homepage: people who like the buffet
+         are the most likely to want catering, so we point them there. -->
+    <section class="section catering">
+      <div class="container">
+        <h2>Feeding a Crowd?</h2>
+        <p>Get your buffet favorites in party-size trays for your next event.</p>
+        <a class="button" href="catering.html">View Catering Options</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>
