@@ -24,6 +24,12 @@
 // what the order would look like).
 const FORM_ENDPOINT = "https://formspree.io/f/mrpqenap";
 
+// The FD Orders app's database. Orders go straight into the app through one
+// locked-down database function (it can only ADD a catering order).
+// The key is the PUBLISHABLE one, which is meant to be public.
+const ORDERS_DB_URL = "https://hemdteagkpjodrnsiecw.supabase.co";
+const ORDERS_DB_KEY = "sb_publishable_Obe832C66r7F-T-cmZxs7Q_XSJQw9EI";
+
 const MIN_DAYS_AHEAD = 3;                    // matches the "3 days notice" policy
 
 // New York City sales tax on catering: 4% state + 4.5% city + 0.375% MCTD = 8.875%.
@@ -476,27 +482,105 @@ function buildSummary(form) {
   ]).join("\n");
 }
 
-// Sends the order. "async" lets us "await" the network without freezing the page.
+/* ---------- Sending to the FD Orders app (the store's database) ---------- */
+
+// The order in the shape the database function expects (see supabase/online-orders.sql
+// in the food-dynasty-orders project). Item IDs match the app's menu, so staff can
+// reorder it later and the app can double-check the prices.
+function buildOrderForApp() {
+  const totals = trayTotals();
+  const email = FIELDS.email.value.trim();
+  const notes = FIELDS.notes.value.trim();
+  return {
+    customer: {
+      name: FIELDS.name.value.trim(),
+      phone: FIELDS.phone.value.trim(),
+      address: isDelivery() ? FIELDS.address.value.trim() : "",
+      apt: isDelivery() ? FIELDS.apt.value.trim() : "",
+      city: isDelivery() ? FIELDS.city.value.trim() : "",
+      zip: isDelivery() ? FIELDS.zip.value.trim() : ""
+    },
+    fulfillment: isDelivery() ? "delivery" : "pickup",
+    // "2026-11-21" + "12:30" in the customer's local time -> a full date-time the database understands
+    due_at: new Date(FIELDS.date.value + "T" + FIELDS.time.value).toISOString(),
+    items: tray.map(function (line) {
+      const item = ITEMS[line.id];
+      const unitPrice = item.unit ? item.price : item.sizes[line.size][1];
+      return {
+        id: line.id,
+        name: item.name,
+        size: line.size,
+        size_label: item.unit ? null : item.sizes[line.size][0],
+        qty: line.qty,
+        unit_price: unitPrice,
+        line_total: roundCents(unitPrice * line.qty),
+        label: item.unit
+          ? item.name + " · " + line.qty + " " + unitWord(item, true)
+          : line.qty + " × " + item.name + " (" + item.sizes[line.size][0] + ")",
+        note: line.note
+      };
+    }),
+    subtotal: totals.subtotal,
+    delivery_fee: totals.deliveryFee,
+    tax: totals.tax,
+    total: totals.total,
+    delivery_address: isDelivery() ? deliveryAddress() : null,
+    notes: [notes, email ? "Customer email: " + email : ""].filter(Boolean).join("\n") || null
+  };
+}
+
+// Calls the database's one public "door" (an RPC = remote procedure call).
+// Returns the new order number, or null if it didn't work for any reason.
+async function sendToOrdersApp() {
+  try {
+    const response = await fetch(ORDERS_DB_URL + "/rest/v1/rpc/submit_online_order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": ORDERS_DB_KEY },
+      body: JSON.stringify({ payload: buildOrderForApp() })
+    });
+    if (!response.ok) return null;
+    const orderNumber = await response.json();
+    return Number(orderNumber) || null;
+  } catch (error) {
+    return null;   // offline, blocked, etc.: the email backup still goes out
+  }
+}
+
+// Sends the order TWO ways: into the FD Orders app, and by email as a backup.
+// It counts as sent if EITHER one works, so a single failure never loses an order.
+// "async" lets us "await" the network without freezing the page.
 async function sendOrder(form, summary) {
   if (!FORM_ENDPOINT) {
     return { ok: true, test: true };   // TEST MODE: pretend it worked
   }
-  const response = await fetch(FORM_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({
-      _subject: "Catering order request (" + whenWord() + "): " + FIELDS.name.value.trim() + " · " + prettyDate(FIELDS.date.value),
+
+  const orderNumber = await sendToOrdersApp();
+
+  let emailOk = false;
+  try {
+    const response = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        _subject: "Catering order request" + (orderNumber ? " #" + orderNumber : "") +
+                  " (" + whenWord() + "): " + FIELDS.name.value.trim() + " · " + prettyDate(FIELDS.date.value),
+        in_orders_app: orderNumber ? "Yes, order #" + orderNumber : "NO: enter it in FD Orders by hand",
       name: FIELDS.name.value.trim(),
       phone: FIELDS.phone.value.trim(),
       email: FIELDS.email.value.trim(),   // Formspree uses this as the "reply to" address
       type: whenWord(),
       when: prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
       delivery_address: isDelivery() ? deliveryAddress() : "(pickup)",
-      estimated_total: money(trayTotals().total) + " incl. tax",
-      order: summary
-    })
-  });
-  return { ok: response.ok, test: false };
+        estimated_total: money(trayTotals().total) + " incl. tax",
+        order: summary
+      })
+    });
+    emailOk = response.ok;
+  } catch (error) {
+    emailOk = false;
+  }
+
+  return { ok: Boolean(orderNumber) || emailOk, test: false, orderNumber: orderNumber };
 }
 
 async function handleSubmit(event) {
@@ -521,7 +605,7 @@ async function handleSubmit(event) {
   try {
     const sent = await sendOrder(form, summary);
     if (!sent.ok) throw new Error("The form service said no");
-    showConfirmation(form, summary, sent.test);
+    showConfirmation(form, summary, sent.test, sent.orderNumber);
   } catch (error) {
     showError("Sorry, we couldn't send your order. Please try again, or call us at 718-816-1100.", null);
   } finally {
@@ -534,10 +618,12 @@ async function handleSubmit(event) {
 
 /* ============ 6. CONFIRMATION + PRINT ============ */
 
-function showConfirmation(form, summary, isTest) {
+function showConfirmation(form, summary, isTest, orderNumber) {
   $("done-message").textContent = isTest
     ? "TEST MODE: this order was NOT sent. This is what the store would receive:"
-    : "Thank you, " + FIELDS.name.value.trim() + "! We'll call you at " + FIELDS.phone.value.trim() +
+    : "Thank you, " + FIELDS.name.value.trim() + "!" +
+      (orderNumber ? " Your request number is #" + orderNumber + "." : "") +
+      " We'll call you at " + FIELDS.phone.value.trim() +
       " within one business day to confirm your order and take the deposit.";
   $("order-summary").textContent = summary;   // textContent = shown as plain text, never run as code
 
