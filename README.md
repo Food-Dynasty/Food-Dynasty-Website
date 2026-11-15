@@ -2,7 +2,7 @@
 
 A responsive website for **Food Dynasty Supermarket**, a family-owned grocery store at 1071 Bay St, Staten Island, NY. Built to replace the store's drag-and-drop site with a faster, clearer site that puts the supermarket (departments and weekly sales) first.
 
-**Live site:** _coming soon_
+**Live site:** https://food-dynasty.github.io/Food-Dynasty-Website/
 
 ## Pages
 
