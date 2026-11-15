@@ -246,6 +246,50 @@ h1, h2, h3 {
 }
 
 
+/* ============ 8b. PAYMENT METHODS ============
+   A list turned into a row of rounded "pills" with flexbox.
+   flex-wrap lets the pills drop to a second line on narrow phones. */
+.pay-title {
+  text-align: center;
+  margin: 32px 0 12px;
+}
+
+.pay-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pay-list li {
+  background: var(--yellow);
+  color: var(--black);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.pay-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666666;
+  margin: 10px 0 0;
+}
+
+/* Modifiers for the About page, where everything is left-aligned */
+.pay-list-left {
+  justify-content: flex-start;
+}
+
+.pay-note-left {
+  text-align: left;
+}
+
+
 /* ============ 9. DEPARTMENT CARDS ============
    CSS GRID: lays the cards out in columns.
    "1fr" = one equal share of the available width. On phones: 1 column.
