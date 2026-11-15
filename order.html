@@ -75,7 +75,7 @@
 
         <div class="how-it-works">
           <p><strong>How it works:</strong> 1. Add items to your tray. 2. Send your request. 3. We call you within one business day to confirm and take a <strong>50% deposit</strong>. Your order is <strong>not confirmed until we call</strong>.</p>
-          <p>Please order at least <strong>3 days</strong> ahead. Questions? Call <a href="tel:+17188161100">718-816-1100</a>.</p>
+          <p>Pick up at 1071 Bay St, or get it <strong>delivered for $15</strong>. Please order at least <strong>3 days</strong> ahead. Questions? Call <a href="tel:+17188161100">718-816-1100</a>.</p>
         </div>
 
         <!-- Two columns on computers: menu on the left, tray + form on the right -->
@@ -100,6 +100,7 @@
               <!-- order.js fills in every number here (see trayTotals() in js/order.js) -->
               <div class="tray-totals" id="tray-totals" hidden>
                 <p class="tray-small"><span>Subtotal</span> <span id="tray-subtotal">$0.00</span></p>
+                <p class="tray-small" id="tray-delivery-row" hidden><span>Delivery fee</span> <span id="tray-delivery">$0.00</span></p>
                 <p class="tray-small"><span>NYC sales tax (<span id="tray-tax-rate">8.875%</span>)</span> <span id="tray-tax">$0.00</span></p>
                 <p class="tray-grand"><span>Estimated total</span> <strong id="tray-total">$0.00</strong></p>
                 <p class="tray-small"><span>50% deposit when we confirm</span> <span id="tray-deposit">$0.00</span></p>
@@ -122,15 +123,53 @@
               <label for="f-email">Email <span class="optional">(optional)</span></label>
               <input id="f-email" name="email" type="email" autocomplete="email">
 
-              <!-- Two fields side by side -->
+              <!-- PICKUP OR DELIVERY
+                   <fieldset> groups related choices; <legend> is the group's title.
+                   Radio buttons with the SAME name="fulfillment" = only one can be picked. -->
+              <fieldset class="choice-group">
+                <legend>Pickup or delivery?</legend>
+                <label class="choice">
+                  <input type="radio" name="fulfillment" id="f-pickup" value="pickup" checked>
+                  <span><strong>Pickup</strong> at 1071 Bay St · free</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="fulfillment" id="f-delivery" value="delivery">
+                  <span><strong>Delivery</strong> · $15.00 fee</span>
+                </label>
+              </fieldset>
+
+              <!-- Only shown when "Delivery" is picked (order.js removes "hidden") -->
+              <div class="delivery-fields" id="delivery-fields" hidden>
+                <label for="f-address">Street address</label>
+                <input id="f-address" name="address" type="text" autocomplete="address-line1" placeholder="123 Main St">
+
+                <label for="f-apt">Apt, floor or business name <span class="optional">(optional)</span></label>
+                <input id="f-apt" name="apt" type="text" autocomplete="address-line2">
+
+                <div class="form-row">
+                  <div>
+                    <label for="f-city">City</label>
+                    <input id="f-city" name="city" type="text" autocomplete="address-level2" value="Staten Island">
+                  </div>
+                  <div>
+                    <label for="f-zip">ZIP code</label>
+                    <input id="f-zip" name="zip" type="text" autocomplete="postal-code" inputmode="numeric" maxlength="5" placeholder="10305">
+                  </div>
+                </div>
+                <!-- TODO: ask the store which areas they deliver to, and say so here -->
+                <p class="field-note">A $15.00 delivery fee is added to your total. We'll confirm your address and delivery area when we call.</p>
+              </div>
+
+              <!-- Two fields side by side. The labels say "Pickup ..." or "Delivery ...":
+                   order.js changes the text in the <span>s when the choice changes. -->
               <div class="form-row">
                 <div>
-                  <label for="f-date">Pickup date</label>
+                  <label for="f-date"><span class="when-word">Pickup</span> date</label>
                   <!-- order.js sets the earliest allowed date to 3 days from today -->
                   <input id="f-date" name="pickup_date" type="date" required>
                 </div>
                 <div>
-                  <label for="f-time">Pickup time</label>
+                  <label for="f-time"><span class="when-word">Pickup</span> time</label>
                   <input id="f-time" name="pickup_time" type="time" min="08:00" max="19:00" step="900" required>
                 </div>
               </div>

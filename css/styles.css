@@ -1159,6 +1159,53 @@ html {
   margin-top: 4px;
 }
 
+/* Pickup / Delivery choice: two big tappable boxes */
+.choice-group {
+  border: none;
+  padding: 0;
+  margin: 18px 0 0;
+}
+
+.choice-group legend {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.order-form .choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  border: 2px solid #dddddd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 8px 0 0;
+  cursor: pointer;
+}
+
+.order-form .choice input {
+  width: auto;
+}
+
+/* :has() = "a .choice that HAS a checked radio inside it" -> highlight the picked box */
+.order-form .choice:has(input:checked) {
+  border-color: var(--black);
+  background: #fffbe6;
+}
+
+.delivery-fields {
+  background: var(--gray-light);
+  border-radius: 8px;
+  padding: 2px 14px 12px;
+  margin-top: 10px;
+}
+
+.field-note {
+  font-size: 0.85rem;
+  color: #555555;
+  margin: 10px 0 0;
+}
+
 /* Red outline on a field with a problem (set by JavaScript with aria-invalid) */
 .order-form [aria-invalid="true"] {
   border-color: #b00020;

@@ -29,6 +29,10 @@ const MIN_DAYS_AHEAD = 3;                    // matches the "3 days notice" poli
 // New York City sales tax on catering: 4% state + 4.5% city + 0.375% MCTD = 8.875%.
 // Written as a decimal: 8.875% = 0.08875. If the rate changes, change it only here.
 const TAX_RATE = 0.08875;
+
+// Flat delivery fee. In New York, delivery charges on taxable items are taxable too,
+// so the fee is included in the amount the tax is calculated on.
+const DELIVERY_FEE = 15;
 const STORAGE_KEY = "fd-catering-tray";      // name used to save the tray in the browser
 
 
@@ -101,8 +105,40 @@ const FIELDS = {
   time: $("f-time"),
   notes: $("f-notes"),
   website: $("f-website"),   // the hidden honeypot
-  agree: $("f-agree")
+  agree: $("f-agree"),
+  delivery: $("f-delivery"), // the "Delivery" radio button
+  address: $("f-address"),
+  apt: $("f-apt"),
+  city: $("f-city"),
+  zip: $("f-zip")
 };
+
+// true when the customer picked Delivery
+function isDelivery() {
+  return FIELDS.delivery.checked;
+}
+
+// "Pickup" or "Delivery", used in labels, messages and the email subject
+function whenWord() {
+  return isDelivery() ? "Delivery" : "Pickup";
+}
+
+// The address as one line: "123 Main St, Apt 2, Staten Island, NY 10305"
+function deliveryAddress() {
+  return [FIELDS.address.value.trim(), FIELDS.apt.value.trim(), FIELDS.city.value.trim()]
+    .filter(function (part) { return part !== ""; })   // skip the empty apt field
+    .join(", ") + ", NY " + FIELDS.zip.value.trim();
+}
+
+// Runs whenever Pickup/Delivery changes: show or hide the address fields,
+// relabel the date/time fields, and refresh the totals (the $15 fee).
+function updateFulfillment() {
+  $("delivery-fields").hidden = !isDelivery();
+  document.querySelectorAll(".when-word").forEach(function (span) {
+    span.textContent = whenWord();
+  });
+  renderTray();
+}
 
 
 /* ============ 2. BUILD THE MENU ON THE PAGE ============ */
@@ -189,10 +225,12 @@ function roundCents(amount) {
 // so every part of the page (tray, phone bar, email, printout) shows the same numbers.
 function trayTotals() {
   const subtotal = roundCents(traySubtotal());
-  const tax = roundCents(subtotal * TAX_RATE);
-  const total = roundCents(subtotal + tax);
+  // No fee on an empty tray, so an empty order never shows "$15.00"
+  const deliveryFee = (isDelivery() && tray.length > 0) ? DELIVERY_FEE : 0;
+  const tax = roundCents((subtotal + deliveryFee) * TAX_RATE);
+  const total = roundCents(subtotal + deliveryFee + tax);
   const deposit = roundCents(total / 2);
-  return { subtotal: subtotal, tax: tax, total: total, deposit: deposit };
+  return { subtotal: subtotal, deliveryFee: deliveryFee, tax: tax, total: total, deposit: deposit };
 }
 
 // "8.875%": the rate shown to customers, built from TAX_RATE so it can't get out of sync
@@ -262,6 +300,8 @@ function renderTray() {
   const itemCount = tray.length;
   $("tray-totals").hidden = itemCount === 0;
   $("tray-subtotal").textContent = money(totals.subtotal);
+  $("tray-delivery-row").hidden = totals.deliveryFee === 0;
+  $("tray-delivery").textContent = money(totals.deliveryFee);
   $("tray-tax-rate").textContent = taxRateText();
   $("tray-tax").textContent = money(totals.tax);
   $("tray-total").textContent = money(totals.total);
@@ -364,17 +404,26 @@ function validate(form) {
 
   if (FIELDS.email.value.trim() && !FIELDS.email.checkValidity()) return ["That email address doesn't look right.", FIELDS.email];
 
+  // Address checks only matter for delivery
+  if (isDelivery()) {
+    if (!FIELDS.address.value.trim()) return ["Please enter the delivery address.", FIELDS.address];
+    if (!FIELDS.city.value.trim()) return ["Please enter the city for delivery.", FIELDS.city];
+    // ^\d{5}$ = exactly 5 digits, nothing before or after
+    if (!/^\d{5}$/.test(FIELDS.zip.value.trim())) return ["Please enter a 5-digit ZIP code.", FIELDS.zip];
+  }
+
+  const word = whenWord().toLowerCase();   // "pickup" or "delivery", used in the messages
   const date = FIELDS.date.value;
-  if (!date) return ["Please choose a pickup date.", FIELDS.date];
+  if (!date) return ["Please choose a " + word + " date.", FIELDS.date];
   // Dates in "YYYY-MM-DD" form can be compared as plain text
   if (date < earliestPickupDate()) {
-    return ["Catering needs at least " + MIN_DAYS_AHEAD + " days' notice. The earliest pickup is " + prettyDate(earliestPickupDate()) + ".", FIELDS.date];
+    return ["Catering needs at least " + MIN_DAYS_AHEAD + " days' notice. The earliest " + word + " date is " + prettyDate(earliestPickupDate()) + ".", FIELDS.date];
   }
 
   const time = FIELDS.time.value;
-  if (!time) return ["Please choose a pickup time.", FIELDS.time];
+  if (!time) return ["Please choose a " + word + " time.", FIELDS.time];
   if (time < FIELDS.time.min || time > FIELDS.time.max) {
-    return ["Pickup times are between " + prettyTime(FIELDS.time.min) + " and " + prettyTime(FIELDS.time.max) + ".", FIELDS.time];
+    return [whenWord() + " times are between " + prettyTime(FIELDS.time.min) + " and " + prettyTime(FIELDS.time.max) + ".", FIELDS.time];
   }
 
   if (!$("f-agree").checked) return ["Please check the box to confirm you understand how ordering works.", $("f-agree")];
@@ -393,18 +442,30 @@ function buildSummary(form) {
   });
 
   const totals = trayTotals();
+
+  // The "how and when" lines differ for pickup and delivery
+  const when = prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value);
+  const howLines = isDelivery()
+    ? [
+        "DELIVERY: " + when,
+        "Address: " + deliveryAddress()
+      ]
+    : ["PICKUP:  " + when + " (1071 Bay St)"];
+
   return [
     "FOOD DYNASTY · CATERING ORDER REQUEST",
     "",
     "Name:    " + FIELDS.name.value.trim(),
     "Phone:   " + FIELDS.phone.value.trim(),
     "Email:   " + (FIELDS.email.value.trim() || "(none)"),
-    "Pickup:  " + prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
+    ""
+  ].concat(howLines, [
     "",
     "ITEMS",
     lines.join("\n"),
     "",
-    "Subtotal:         " + money(totals.subtotal),
+    "Subtotal:         " + money(totals.subtotal)
+  ], totals.deliveryFee ? ["Delivery fee:     " + money(totals.deliveryFee)] : [], [
     "Sales tax " + taxRateText() + ": " + money(totals.tax),
     "Estimated total:  " + money(totals.total),
     "50% deposit:      " + money(totals.deposit),
@@ -412,7 +473,7 @@ function buildSummary(form) {
     "Kitchen notes: " + (FIELDS.notes.value.trim() || "(none)"),
     "",
     "Sent " + new Date().toLocaleString("en-US")
-  ].join("\n");
+  ]).join("\n");
 }
 
 // Sends the order. "async" lets us "await" the network without freezing the page.
@@ -424,11 +485,13 @@ async function sendOrder(form, summary) {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({
-      _subject: "Catering order request: " + FIELDS.name.value.trim() + " · " + prettyDate(FIELDS.date.value),
+      _subject: "Catering order request (" + whenWord() + "): " + FIELDS.name.value.trim() + " · " + prettyDate(FIELDS.date.value),
       name: FIELDS.name.value.trim(),
       phone: FIELDS.phone.value.trim(),
       email: FIELDS.email.value.trim(),   // Formspree uses this as the "reply to" address
-      pickup: prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
+      type: whenWord(),
+      when: prettyDate(FIELDS.date.value) + " at " + prettyTime(FIELDS.time.value),
+      delivery_address: isDelivery() ? deliveryAddress() : "(pickup)",
       estimated_total: money(trayTotals().total) + " incl. tax",
       order: summary
     })
@@ -491,11 +554,11 @@ function showConfirmation(form, summary, isTest) {
 
 function startNewOrder() {
   const form = $("order-form");
-  form.reset();
+  form.reset();   // also switches back to "Pickup"
   form.hidden = false;
   document.querySelector(".tray").hidden = false;
   $("order-done").hidden = true;
-  renderTray();
+  updateFulfillment();   // hides the address fields again and redraws the tray
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -503,7 +566,14 @@ function startNewOrder() {
 /* ============ START-UP: connect everything ============ */
 
 renderMenu();
-renderTray();
+// Draws the tray too. Called at start-up because browsers sometimes remember
+// which radio button was picked when a page is reloaded.
+updateFulfillment();
+
+// Pickup/Delivery: both radio buttons share one handler
+document.querySelectorAll('input[name="fulfillment"]').forEach(function (radio) {
+  radio.addEventListener("change", updateFulfillment);
+});
 
 if (!FORM_ENDPOINT) {
   $("test-banner").hidden = false;
