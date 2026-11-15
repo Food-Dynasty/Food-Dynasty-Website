@@ -64,6 +64,13 @@ h1, h2, h3 {
   line-height: 1.2;
 }
 
+/* The HTML "hidden" attribute hides an element, but any CSS rule that sets "display"
+   (like display: flex) would override it and show the element anyway.
+   This makes "hidden" always win. JavaScript relies on it to show/hide things. */
+[hidden] {
+  display: none !important;
+}
+
 /* A reusable "wrapper": centers content and limits its width.
    margin: 0 auto  = 0 on top/bottom, "auto" on left/right, which centers it.
    padding: 0 16px = keeps text off the screen edges on phones. */
@@ -849,6 +856,406 @@ html {
 }
 
 
+/* ============ 11g. ONLINE ORDER PAGE ============ */
+
+/* Two classes (.hero.hero-short) beat the single .hero rule in the big-screen
+   section, which comes LATER in the file and would otherwise win */
+.hero.hero-short {
+  padding: 48px 0;
+}
+
+.test-banner {
+  background: #fff3cd;
+  border-bottom: 2px solid var(--yellow-dark);
+  text-align: center;
+  padding: 10px 16px;
+}
+
+.how-it-works {
+  background: var(--gray-light);
+  border-left: 6px solid var(--yellow);
+  border-radius: 8px;
+  padding: 12px 20px;
+  margin-bottom: 28px;
+}
+
+.how-it-works p {
+  margin: 6px 0;
+}
+
+.how-it-works a {
+  color: var(--black);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Phones: menu, then tray + form, stacked. Computers: side by side (section 12). */
+.order-layout {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+}
+
+/* --- The menu: one <details> box per category --- */
+.order-cat {
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: white;
+  overflow: hidden;
+}
+
+.order-cat summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 14px 18px;
+  background: var(--gray-light);
+}
+
+.order-cat[open] summary {
+  border-bottom: 3px solid var(--yellow);
+}
+
+.order-cat-count {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.order-cat-note {
+  margin: 12px 18px 0;
+  font-size: 0.9rem;
+  color: #555555;
+}
+
+.order-items {
+  list-style: none;
+  margin: 0;
+  padding: 4px 18px 10px;
+}
+
+/* Each dish: info on the left, size + Add on the right. flex-wrap lets the
+   controls drop below the name on narrow phones. */
+.order-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 12px 0;
+  border-bottom: 1px dashed #dddddd;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item-info {
+  flex: 1 1 200px;  /* grow and shrink, starting at 200px wide */
+}
+
+.order-item-name {
+  display: block;
+  font-weight: 600;
+}
+
+.order-item-hint {
+  display: block;
+  font-size: 0.82rem;
+  color: #666666;
+}
+
+.order-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-price {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.size-select,
+.order-form input,
+.order-form textarea,
+.qty-input,
+.line-note {
+  font: inherit;  /* form controls don't use the page font by default */
+  font-size: 0.95rem;
+  padding: 8px 10px;
+  border: 1px solid #bbbbbb;
+  border-radius: 6px;
+  background: white;
+  color: var(--text);
+}
+
+.add-btn {
+  font: inherit;
+  font-weight: 700;
+  background: var(--yellow);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  min-width: 84px;  /* stays the same width when the text changes to "Added ✓" */
+}
+
+.add-btn:hover,
+.add-btn:focus-visible {
+  background: var(--yellow-dark);
+}
+
+.add-btn.added {
+  background: #2e7d32;
+  color: white;
+}
+
+/* --- The tray (cart) --- */
+.tray,
+.order-form,
+.order-done {
+  background: white;
+  border: 2px solid var(--black);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.section .tray h2,
+.section .order-form h2,
+.section .order-done h2 {
+  font-size: 1.3rem;
+  text-align: left;
+  margin: 0 0 12px;
+}
+
+.tray-empty {
+  color: #666666;
+  margin: 0;
+}
+
+.tray-line {
+  border-bottom: 1px solid #eeeeee;
+  padding: 10px 0;
+}
+
+.tray-line-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.tray-line-size {
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.tray-line-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.qty-btn {
+  font: inherit;
+  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #bbbbbb;
+  border-radius: 6px;
+  background: var(--gray-light);
+  cursor: pointer;
+}
+
+.qty-input {
+  width: 64px;
+  text-align: center;
+  padding: 6px 4px;
+}
+
+.qty-label {
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.remove-btn {
+  margin-left: auto;  /* pushes the button to the far right of the row */
+  font: inherit;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  color: #b00020;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.line-note {
+  width: 100%;
+  font-size: 0.85rem;
+}
+
+.tray-totals {
+  margin-top: 12px;
+}
+
+.tray-totals p {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  font-size: 1.1rem;
+}
+
+.tray-totals .tray-small {
+  font-size: 0.85rem;
+  color: #555555;
+}
+
+/* --- The form --- */
+.order-form label {
+  display: block;
+  font-weight: 600;
+  margin: 14px 0 4px;
+}
+
+.order-form input,
+.order-form textarea {
+  width: 100%;
+}
+
+.optional {
+  font-weight: 400;
+  color: #777777;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* The checkbox line: box and text side by side */
+.order-form .check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin-top: 18px;
+}
+
+.order-form .check input {
+  width: auto;
+  margin-top: 4px;
+}
+
+/* Red outline on a field with a problem (set by JavaScript with aria-invalid) */
+.order-form [aria-invalid="true"] {
+  border-color: #b00020;
+  outline: 2px solid #b00020;
+}
+
+.form-error {
+  background: #fdecea;
+  color: #b00020;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 14px 0 0;
+  font-weight: 600;
+}
+
+/* Moves the honeypot far off-screen: invisible to people, still "there" for bots */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+}
+
+.button-full {
+  display: block;
+  width: 100%;
+  margin: 18px 0 0;
+  border: none;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button-full:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* --- Confirmation --- */
+.order-summary {
+  white-space: pre-wrap;  /* keep the line breaks, but wrap long lines */
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  background: var(--gray-light);
+  border-radius: 8px;
+  padding: 14px;
+  overflow-x: auto;
+}
+
+.order-done .button {
+  border: none;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- Phone "View tray" bar, stuck to the bottom of the screen --- */
+.tray-bar {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--black);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 14px 18px;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.tray-bar strong {
+  color: var(--yellow);
+}
+
+.has-tray-bar .site-footer {
+  padding-bottom: 96px;
+}
+
+/* --- PRINTING: only the order summary is printed (for the kitchen) --- */
+@media print {
+  .top-bar, .site-header, .hero, .test-banner, .how-it-works, .order-menu,
+  .tray, .order-form, .tray-bar, .site-footer, .order-done .button {
+    display: none !important;
+  }
+
+  .order-layout {
+    display: block;
+  }
+
+  .order-done {
+    border: none;
+    padding: 0;
+  }
+
+  .order-summary {
+    background: none;
+    font-size: 11pt;
+  }
+}
+
+
 /* ============ 12. BIGGER SCREENS ============
    A MEDIA QUERY: rules inside only apply when the screen is at least 768px wide.
    Everything above is designed for phones first ("mobile-first"), then we
@@ -872,6 +1279,24 @@ html {
 
   .grid-3 {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Order page: menu (wider) | tray + form (narrower) */
+  .order-layout {
+    grid-template-columns: 3fr 2fr;
+  }
+
+  /* The tray column follows you down the page while you scroll the menu */
+  .order-side {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);  /* never taller than the screen... */
+    overflow-y: auto;                 /* ...scroll inside it if it is */
+  }
+
+  /* No need for the phone bar when the tray is always visible */
+  .tray-bar {
+    display: none !important;
   }
 }
 
