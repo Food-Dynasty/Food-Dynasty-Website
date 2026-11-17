@@ -147,7 +147,8 @@ function updateFulfillment() {
 /* ============ 2. BUILD THE MENU ON THE PAGE ============ */
 
 function renderMenu() {
-  const html = CATERING_MENU.map(function (category, index) {
+  // Seasonal categories (like Thanksgiving) only while they're in season (js/catering-menu.js)
+  const html = CATERING_MENU.filter(function (category) { return categoryInSeason(category); }).map(function (category, index) {
     return (
       // <details> = a box that opens/closes when its <summary> is clicked.
       // The first category starts open.
