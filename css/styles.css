@@ -1023,6 +1023,50 @@ html {
   gap: 8px;
 }
 
+/* Thanksgiving dinners: the stuffing / pasta / vegetable / potato / pie dropdowns.
+   1 column on phones, 2 side by side when there's room. */
+.choice-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px 12px;
+  margin-top: 10px;
+}
+
+.choice-pick span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.choice-pick select {
+  width: 100%;
+  padding: 7px 8px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.9rem;
+  background: white;
+}
+
+/* A dropdown that still needs a pick after "Add" was tapped */
+.choice-pick select.missing {
+  border: 2px solid #c62828;
+}
+
+.choice-error {
+  grid-column: 1 / -1;   /* spans the whole row of dropdowns */
+  margin: 0;
+  color: #c62828;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tray-line-choices {
+  font-size: 0.82rem;
+  color: #444444;
+  margin-top: 2px;
+}
+
 .order-price {
   font-weight: 700;
   white-space: nowrap;

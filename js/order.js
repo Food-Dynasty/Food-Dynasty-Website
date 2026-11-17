@@ -164,6 +164,27 @@ function renderMenu() {
   $("order-menu").innerHTML = html;
 }
 
+// Items with choices (Thanksgiving dinners): one dropdown per pick, under the name.
+// Each starts on "Choose…" so nobody gets a side they didn't pick.
+function choicePicksHTML(item) {
+  const slots = choiceSlots(item);
+  if (!slots.length) return "";
+  return (
+    '<div class="choice-picks">' +
+      slots.map(function (slot, i) {
+        return '<label class="choice-pick"><span>' + escapeHTML(slot.label) + "</span>" +
+          '<select data-slot="' + i + '">' +
+            '<option value="">Choose…</option>' +
+            slot.options.map(function (option) {
+              return '<option value="' + escapeHTML(option) + '">' + escapeHTML(option) + "</option>";
+            }).join("") +
+          "</select></label>";
+      }).join("") +
+      '<p class="choice-error" role="alert" hidden>Please pick every option above, then tap Add.</p>' +
+    "</div>"
+  );
+}
+
 // One row in the menu: name (+ hint) on the left, size picker + Add button on the right
 function itemRowHTML(item) {
   let chooser;
@@ -191,6 +212,7 @@ function itemRowHTML(item) {
         '<span class="order-item-name">' + escapeHTML(item.name) + "</span>" +
         (item.unit ? '<span class="order-item-hint">Minimum ' + item.min + " " + unitWord(item, true) + "</span>" : "") +
         (item.hint ? '<span class="order-item-hint">' + escapeHTML(item.hint) + "</span>" : "") +
+        choicePicksHTML(item) +
       "</div>" +
       '<div class="order-item-actions">' + chooser +
         '<button type="button" class="add-btn" aria-label="Add ' + escapeHTML(item.name) + ' to tray">Add</button>' +
@@ -248,16 +270,23 @@ function minQty(item) {
   return item.unit ? item.min : 1;
 }
 
-function addToTray(id, size) {
+// choices = the picks for items that have them, e.g. ["Sausage Stuffing", "Baked Ziti", ...]
+function addToTray(id, size, choices) {
   const item = ITEMS[id];
   if (!item) return;
 
-  const existing = tray.find(function (line) { return line.id === id && line.size === size; });
+  // The same dinner with DIFFERENT sides is a separate line; same sides -> one more
+  const sameChoices = JSON.stringify(choices || null);
+  const existing = tray.find(function (line) {
+    return line.id === id && line.size === size && JSON.stringify(line.choices || null) === sameChoices;
+  });
 
   if (existing && !item.unit) {
     existing.qty += 1;            // same tray in the same size again -> one more
   } else if (!existing) {
-    tray.push({ id: id, size: size, qty: minQty(item), note: "" });
+    const line = { id: id, size: size, qty: minQty(item), note: "" };
+    if (choices) line.choices = choices;
+    tray.push(line);
   }
   // (Per-person items already in the tray: change the number of people in the tray instead.)
   saveTray();
@@ -284,6 +313,7 @@ function renderTray() {
             '<span class="tray-line-price">' + money(linePrice(line)) + "</span>" +
           "</div>" +
           '<div class="tray-line-size">' + escapeHTML(sizeText) + "</div>" +
+          (line.choices ? '<div class="tray-line-choices">' + escapeHTML(choicesText(item, line.choices)) + "</div>" : "") +
           '<div class="tray-line-controls">' +
             '<button type="button" class="qty-btn" data-action="minus" aria-label="Less ' + escapeHTML(item.name) + '">−</button>' +
             '<input type="number" class="qty-input" value="' + line.qty + '" min="' + minQty(item) + '" max="999" ' +
@@ -340,7 +370,8 @@ function loadTray() {
     // Drop anything that no longer matches the menu (e.g. an item was removed from the menu)
     return saved.filter(function (line) {
       const item = ITEMS[line.id];
-      return item && (item.unit || (item.sizes && item.sizes[line.size]));
+      return item && (item.unit || (item.sizes && item.sizes[line.size])) &&
+             (!item.choices || choicesComplete(item, line.choices));   // picks must still be on the menu
     });
   } catch (error) {
     return [];
@@ -442,7 +473,9 @@ function buildSummary(form) {
     const what = item.unit
       ? item.name + ": " + line.qty + " " + unitWord(item, true) + " × " + money(item.price)
       : line.qty + " × " + item.name + " (" + item.sizes[line.size][0] + ")";
-    return "• " + what + "  =  " + money(linePrice(line)) + (line.note ? "\n    Note: " + line.note : "");
+    return "• " + what + "  =  " + money(linePrice(line)) +
+      (line.choices ? "\n    " + choicesText(item, line.choices) : "") +
+      (line.note ? "\n    Note: " + line.note : "");
   });
 
   const totals = trayTotals();
@@ -515,6 +548,9 @@ function buildOrderForApp() {
         label: item.unit
           ? item.name + " · " + line.qty + " " + unitWord(item, true)
           : line.qty + " × " + item.name + " (" + item.sizes[line.size][0] + ")",
+        // Thanksgiving dinners: the picks, as a list and as readable text for the kitchen
+        choices: line.choices || null,
+        choices_text: line.choices ? choicesText(item, line.choices) : null,
         note: line.note
       };
     }),
@@ -647,7 +683,26 @@ $("order-menu").addEventListener("click", function (event) {
 
   const row = button.closest(".order-item");
   const select = row.querySelector(".size-select");
-  addToTray(row.dataset.id, select ? Number(select.value) : 0);
+
+  // Items with choices: every dropdown must be picked first
+  let choices = null;
+  const pickers = row.querySelectorAll(".choice-picks select");
+  if (pickers.length) {
+    choices = Array.from(pickers).map(function (s) { return s.value; });
+    const error = row.querySelector(".choice-error");
+    const firstEmpty = Array.from(pickers).find(function (s) { return !s.value; });
+    pickers.forEach(function (s) { s.classList.toggle("missing", !s.value); });
+    if (firstEmpty) {
+      error.hidden = false;
+      firstEmpty.focus();
+      return;
+    }
+    error.hidden = true;
+  }
+
+  addToTray(row.dataset.id, select ? Number(select.value) : 0, choices);
+  // Reset the dropdowns so a second dinner starts fresh
+  pickers.forEach(function (s) { s.value = ""; });
 
   // Quick "Added ✓" feedback on the button
   button.textContent = "Added ✓";
@@ -656,6 +711,14 @@ $("order-menu").addEventListener("click", function (event) {
     button.textContent = "Add";
     button.classList.remove("added");
   }, 1200);
+});
+
+// Picking an option clears its red "missing" outline (and the message, once all are picked)
+$("order-menu").addEventListener("change", function (event) {
+  if (!event.target.closest(".choice-picks")) return;
+  event.target.classList.remove("missing");
+  const box = event.target.closest(".choice-picks");
+  if (!box.querySelector("select.missing")) box.querySelector(".choice-error").hidden = true;
 });
 
 // Same idea for the tray: one handler for all the +, −, and Remove buttons
