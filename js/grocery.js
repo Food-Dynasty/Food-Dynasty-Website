@@ -1,15 +1,9 @@
-/*
-  GROCERY LIST PAGE (grocery.html)
-  --------------------------------
-  1. Fills in the delivery day and time choices
-  2. Counts the items as the customer types
-  3. Checks the form and sends the list straight into the FD Orders staff app
-*/
+/**
+ * Grocery list request page: delivery slot picker, item counter, validation and
+ * submission to the submit_grocery_list RPC.
+ */
 "use strict";
 
-// The FD Orders database and its PUBLISHABLE key (public by design).
-// The only thing this page can do there is call submit_grocery_list, which can
-// only ADD a grocery delivery order.
 const ORDERS_DB_URL = "https://hemdteagkpjodrnsiecw.supabase.co";
 const ORDERS_DB_KEY = "sb_publishable_Obe832C66r7F-T-cmZxs7Q_XSJQw9EI";
 
@@ -28,7 +22,6 @@ function listItems(text) {
     .map(function (line) { return line.replace(/^\s*([-*•]|\d+[.)])\s*/, "").trim(); })
     .filter(function (line) { return line !== ""; });
 }
-
 
 /* ---------- 1. Delivery day and time ---------- */
 
@@ -69,8 +62,6 @@ function fillTimes() {
   const isToday = day.toDateString() === new Date().toDateString();
   const slots = timeSlots(day);
   let html = "";
-  // "As soon as possible" only makes sense today, and only if ~2 hours from now is
-  // still within delivery hours (not at 3 AM when the store is closed, or after closing)
   const soon = new Date(Date.now() + ASAP_HOURS * 60 * 60 * 1000);
   const soonHour = soon.getHours() + soon.getMinutes() / 60;
   const asapOk = isToday && soon.toDateString() === day.toDateString() &&
@@ -85,14 +76,12 @@ function fillTimes() {
   $("g-time").innerHTML = html;
 }
 
-
 /* ---------- 2. Item counter ---------- */
 
 function updateCount() {
   const n = listItems($("g-list").value).length;
   $("g-count").textContent = n + (n === 1 ? " item" : " items") + (n > MAX_ITEMS ? " (too many: please call us)" : "");
 }
-
 
 /* ---------- 3. Check and send ---------- */
 
@@ -192,7 +181,6 @@ async function handleSubmit(event) {
   $("g-done").focus();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 
 /* ---------- Start-up ---------- */
 fillDays();

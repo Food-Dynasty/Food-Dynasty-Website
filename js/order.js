@@ -1,43 +1,20 @@
-/*
-  ORDER PAGE LOGIC (order.html)
-  -----------------------------
-  What this file does, in order:
-    0. Settings
-    1. Prepares the menu data from js/catering-menu.js
-    2. Builds the menu on the page
-    3. Runs the tray (cart): add, change amounts, remove, notes, totals
-    4. Remembers the tray if the page is closed (localStorage)
-    5. Checks the form and sends the order
-    6. Shows the confirmation and lets staff/customers print it
-
-  "use strict" turns on stricter rules that catch common mistakes (like typos
-  that would otherwise silently create new variables).
-*/
+/**
+ * Online catering order page: menu rendering, tray (cart) persisted in localStorage,
+ * totals with tax and delivery, validation, and submission to submit_online_order.
+ */
 "use strict";
-
 
 /* ============ 0. SETTINGS ============ */
 
-// Where orders are sent: the FD Orders app's database. Orders go straight into the
-// app through one locked-down database function (it can only ADD a catering order),
-// and staff get an alert in the app.
-// The key is the PUBLISHABLE one, which is meant to be public.
-// Set ORDERS_DB_URL to "" to switch to TEST MODE (nothing is sent; the page just
-// shows what the order would look like).
 const ORDERS_DB_URL = "https://hemdteagkpjodrnsiecw.supabase.co";
 const ORDERS_DB_KEY = "sb_publishable_Obe832C66r7F-T-cmZxs7Q_XSJQw9EI";
 
 const MIN_DAYS_AHEAD = 3;                    // matches the "3 days notice" policy
 
-// New York City sales tax on catering: 4% state + 4.5% city + 0.375% MCTD = 8.875%.
-// Written as a decimal: 8.875% = 0.08875. If the rate changes, change it only here.
 const TAX_RATE = 0.08875;
 
-// Flat delivery fee. In New York, delivery charges on taxable items are taxable too,
-// so the fee is included in the amount the tax is calculated on.
 const DELIVERY_FEE = 15;
 const STORAGE_KEY = "fd-catering-tray";      // name used to save the tray in the browser
-
 
 /* ============ 1. PREPARE THE MENU DATA ============ */
 
@@ -49,8 +26,6 @@ function slugify(text) {
     .replace(/^-|-$/g, "");        // trim "-" from the start and end
 }
 
-// ITEMS is a lookup table: give it an item's ID, get the item back.
-// e.g. ITEMS["pasta--baked-ziti"] -> { name: "Baked Ziti", sizes: [...], ... }
 const ITEMS = {};
 
 CATERING_MENU.forEach(function (category) {
@@ -68,7 +43,6 @@ CATERING_MENU.forEach(function (category) {
   });
 });
 
-
 /* ============ HELPERS ============ */
 
 // Formats numbers as money: 1234.5 -> "$1,234.50"
@@ -77,9 +51,6 @@ function money(amount) {
   return moneyFormat.format(amount);
 }
 
-// SECURITY: anything a user types (like notes) must be "escaped" before it's put into
-// the page's HTML. Otherwise someone could type <script>...</script> into a note and
-// it would run as code. This turns < > & " ' into harmless text codes.
 function escapeHTML(text) {
   return String(text).replace(/[&<>"']/g, function (ch) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
@@ -92,14 +63,11 @@ function unitWord(item, plural) {
   return "";
 }
 
-// Shortcut so we don't have to type document.getElementById over and over
+// Shorthand for document.getElementById
 function $(id) {
   return document.getElementById(id);
 }
 
-// The form's fields, found once by their IDs.
-// (Why not form.name? Forms have a built-in "name" property, so form.name can
-//  return the FORM's name instead of the "name" input. Using IDs avoids that trap.)
 const FIELDS = {
   name: $("f-name"),
   phone: $("f-phone"),
@@ -133,8 +101,6 @@ function deliveryAddress() {
     .join(", ") + ", NY " + FIELDS.zip.value.trim();
 }
 
-// Runs whenever Pickup/Delivery changes: show or hide the address fields,
-// relabel the date/time fields, and refresh the totals (the $15 fee).
 function updateFulfillment() {
   $("delivery-fields").hidden = !isDelivery();
   document.querySelectorAll(".when-word").forEach(function (span) {
@@ -143,15 +109,11 @@ function updateFulfillment() {
   renderTray();
 }
 
-
 /* ============ 2. BUILD THE MENU ON THE PAGE ============ */
 
 function renderMenu() {
-  // Seasonal categories (like Thanksgiving) only while they're in season (js/catering-menu.js)
   const html = CATERING_MENU.filter(function (category) { return categoryInSeason(category); }).map(function (category, index) {
     return (
-      // <details> = a box that opens/closes when its <summary> is clicked.
-      // The first category starts open.
       '<details class="order-cat"' + (index === 0 ? " open" : "") + ">" +
         "<summary>" + escapeHTML(category.name) +
           ' <span class="order-cat-count">' + category.items.length + " items</span></summary>" +
@@ -164,8 +126,6 @@ function renderMenu() {
   $("order-menu").innerHTML = html;
 }
 
-// Items with choices (Thanksgiving dinners): one dropdown per pick, under the name.
-// Each starts on "Choose…" so nobody gets a side they didn't pick.
 function choicePicksHTML(item) {
   const slots = choiceSlots(item);
   if (!slots.length) return "";
@@ -205,7 +165,6 @@ function itemRowHTML(item) {
       "</select>";
   }
 
-  // data-id="..." stores the item's ID on the row, so the click handler knows which item it is
   return (
     '<li class="order-item" data-id="' + item.id + '">' +
       '<div class="order-item-info">' +
@@ -221,11 +180,8 @@ function itemRowHTML(item) {
   );
 }
 
-
 /* ============ 3. THE TRAY (CART) ============ */
 
-// The tray is a list of lines like: { id: "pasta--baked-ziti", size: 1, qty: 2, note: "" }
-// size = which size was picked (its position in item.sizes). Unused for per-unit items.
 let tray = loadTray();
 
 function linePrice(line) {
@@ -236,19 +192,13 @@ function linePrice(line) {
 
 // Price of everything in the tray BEFORE tax
 function traySubtotal() {
-  // reduce() walks the list and adds every line's price into one running total
   return tray.reduce(function (sum, line) { return sum + linePrice(line); }, 0);
 }
 
-// Money has to be rounded to whole cents. Computers store decimals slightly
-// imprecisely (0.1 + 0.2 = 0.30000000000000004!), so we round on purpose:
-// multiply by 100 (dollars -> cents), round, divide back.
 function roundCents(amount) {
   return Math.round(amount * 100) / 100;
 }
 
-// Subtotal, tax, total and deposit, all calculated in ONE place
-// so every part of the page (tray, phone bar, email, printout) shows the same numbers.
 function trayTotals() {
   const subtotal = roundCents(traySubtotal());
   // No fee on an empty tray, so an empty order never shows "$15.00"
@@ -261,8 +211,6 @@ function trayTotals() {
 
 // "8.875%": the rate shown to customers, built from TAX_RATE so it can't get out of sync
 function taxRateText() {
-  // toFixed(3) -> "8.875"; the pattern trims trailing zeros (and a leftover ".")
-  // so a rate like 8% shows as "8%" instead of "8.000%"
   return (TAX_RATE * 100).toFixed(3).replace(/\.?0+$/, "") + "%";
 }
 
@@ -270,7 +218,6 @@ function minQty(item) {
   return item.unit ? item.min : 1;
 }
 
-// choices = the picks for items that have them, e.g. ["Sausage Stuffing", "Baked Ziti", ...]
 function addToTray(id, size, choices) {
   const item = ITEMS[id];
   if (!item) return;
@@ -288,7 +235,6 @@ function addToTray(id, size, choices) {
     if (choices) line.choices = choices;
     tray.push(line);
   }
-  // (Per-person items already in the tray: change the number of people in the tray instead.)
   saveTray();
   renderTray();
 }
@@ -352,11 +298,7 @@ function clampQty(item, value) {
   return Math.min(999, Math.max(minQty(item), n));
 }
 
-
 /* ============ 4. REMEMBER THE TRAY (localStorage) ============ */
-// localStorage saves small bits of text in THIS browser, so the tray survives a refresh.
-// It can be blocked (private browsing, strict settings), so every use is wrapped in
-// try/catch: if it fails, the page still works; it just won't remember the tray.
 
 function saveTray() {
   try {
@@ -378,13 +320,11 @@ function loadTray() {
   }
 }
 
-
 /* ============ 5. THE FORM ============ */
 
-// Dates: <input type="date"> uses the format "2026-11-20"
 function toDateValue(date) {
   const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");   // months start at 0 in JavaScript!
+  const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return y + "-" + m + "-" + d;
 }
@@ -434,7 +374,7 @@ function validate(form) {
 
   if (!FIELDS.name.value.trim()) return ["Please enter your name.", FIELDS.name];
 
-  const digits = FIELDS.phone.value.replace(/\D/g, "");   // \D = anything that isn't a digit
+  const digits = FIELDS.phone.value.replace(/\D/g, "");
   if (digits.length < 10) return ["Please enter a phone number with area code, so we can call to confirm.", FIELDS.phone];
 
   if (FIELDS.email.value.trim() && !FIELDS.email.checkValidity()) return ["That email address doesn't look right.", FIELDS.email];
@@ -443,7 +383,6 @@ function validate(form) {
   if (isDelivery()) {
     if (!FIELDS.address.value.trim()) return ["Please enter the delivery address.", FIELDS.address];
     if (!FIELDS.city.value.trim()) return ["Please enter the city for delivery.", FIELDS.city];
-    // ^\d{5}$ = exactly 5 digits, nothing before or after
     if (!/^\d{5}$/.test(FIELDS.zip.value.trim())) return ["Please enter a 5-digit ZIP code.", FIELDS.zip];
   }
 
@@ -515,9 +454,6 @@ function buildSummary(form) {
 
 /* ---------- Sending to the FD Orders app (the store's database) ---------- */
 
-// The order in the shape the database function expects (see supabase/online-orders.sql
-// in the food-dynasty-orders project). Item IDs match the app's menu, so staff can
-// reorder it later and the app can double-check the prices.
 function buildOrderForApp() {
   const totals = trayTotals();
   const email = FIELDS.email.value.trim();
@@ -532,7 +468,6 @@ function buildOrderForApp() {
       zip: isDelivery() ? FIELDS.zip.value.trim() : ""
     },
     fulfillment: isDelivery() ? "delivery" : "pickup",
-    // "2026-11-21" + "12:30" in the customer's local time -> a full date-time the database understands
     due_at: new Date(FIELDS.date.value + "T" + FIELDS.time.value).toISOString(),
     items: tray.map(function (line) {
       const item = ITEMS[line.id];
@@ -563,8 +498,6 @@ function buildOrderForApp() {
   };
 }
 
-// Calls the database's one public "door" (an RPC = remote procedure call).
-// Returns the new order number, or null if it didn't work for any reason.
 async function sendToOrdersApp() {
   try {
     const response = await fetch(ORDERS_DB_URL + "/rest/v1/rpc/submit_online_order", {
@@ -576,12 +509,10 @@ async function sendToOrdersApp() {
     const orderNumber = await response.json();
     return Number(orderNumber) || null;
   } catch (error) {
-    return null;   // offline, blocked, etc.: the customer is asked to call instead
+    return null;
   }
 }
 
-// Sends the order into the FD Orders app.
-// "async" lets us "await" the network without freezing the page.
 async function sendOrder(form, summary) {
   if (!ORDERS_DB_URL) {
     return { ok: true, test: true };   // TEST MODE: pretend it worked
@@ -591,7 +522,7 @@ async function sendOrder(form, summary) {
 }
 
 async function handleSubmit(event) {
-  event.preventDefault();   // stop the browser's default "reload the page" behavior
+  event.preventDefault();
   const form = event.target;
   clearErrors();
 
@@ -616,12 +547,10 @@ async function handleSubmit(event) {
   } catch (error) {
     showError("Sorry, your order didn't go through. Please try again in a minute, or call us at 718-816-1100 and we'll take it by phone.", null);
   } finally {
-    // "finally" runs whether it worked or not
     button.disabled = false;
     button.textContent = "Send Order Request";
   }
 }
-
 
 /* ============ 6. CONFIRMATION + PRINT ============ */
 
@@ -632,13 +561,13 @@ function showConfirmation(form, summary, isTest, orderNumber) {
       (orderNumber ? " Your request number is #" + orderNumber + "." : "") +
       " We'll call you at " + FIELDS.phone.value.trim() +
       " within one business day to confirm your order and take the deposit.";
-  $("order-summary").textContent = summary;   // textContent = shown as plain text, never run as code
+  $("order-summary").textContent = summary;
 
   document.querySelector(".tray").hidden = true;
   form.hidden = true;
   $("tray-bar").hidden = true;
   $("order-done").hidden = false;
-  $("order-done").focus();   // moves screen readers (and the view) to the confirmation
+  $("order-done").focus();
 
   // The order is done: empty the tray
   tray = [];
@@ -651,16 +580,13 @@ function startNewOrder() {
   form.hidden = false;
   document.querySelector(".tray").hidden = false;
   $("order-done").hidden = true;
-  updateFulfillment();   // hides the address fields again and redraws the tray
+  updateFulfillment();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 
 /* ============ START-UP: connect everything ============ */
 
 renderMenu();
-// Draws the tray too. Called at start-up because browsers sometimes remember
-// which radio button was picked when a page is reloaded.
 updateFulfillment();
 
 // Pickup/Delivery: both radio buttons share one handler
@@ -675,8 +601,6 @@ if (!ORDERS_DB_URL) {
 // Earliest pickup date the date picker allows
 $("f-date").min = earliestPickupDate();
 
-// EVENT DELEGATION: instead of attaching a click handler to each of the 150 "Add"
-// buttons, we attach ONE handler to the whole menu and check what was clicked.
 $("order-menu").addEventListener("click", function (event) {
   const button = event.target.closest(".add-btn");
   if (!button) return;
@@ -713,7 +637,6 @@ $("order-menu").addEventListener("click", function (event) {
   }, 1200);
 });
 
-// Picking an option clears its red "missing" outline (and the message, once all are picked)
 $("order-menu").addEventListener("change", function (event) {
   if (!event.target.closest(".choice-picks")) return;
   event.target.classList.remove("missing");
@@ -721,7 +644,7 @@ $("order-menu").addEventListener("change", function (event) {
   if (!box.querySelector("select.missing")) box.querySelector(".choice-error").hidden = true;
 });
 
-// Same idea for the tray: one handler for all the +, −, and Remove buttons
+// Tray: +, − and Remove buttons
 $("tray-lines").addEventListener("click", function (event) {
   const button = event.target.closest("[data-action]");
   if (!button) return;
@@ -733,7 +656,7 @@ $("tray-lines").addEventListener("click", function (event) {
 
   if (action === "plus") line.qty = clampQty(item, line.qty + 1);
   if (action === "minus") line.qty = clampQty(item, line.qty - 1);
-  if (action === "remove") tray.splice(index, 1);   // splice = cut 1 line out of the list
+  if (action === "remove") tray.splice(index, 1);
 
   saveTray();
   renderTray();
@@ -748,7 +671,6 @@ $("tray-lines").addEventListener("change", function (event) {
   renderTray();
 });
 
-// Typing a note: save it, but DON'T rebuild the tray (that would kick the cursor out of the box)
 $("tray-lines").addEventListener("input", function (event) {
   if (!event.target.classList.contains("line-note")) return;
   const index = Number(event.target.closest(".tray-line").dataset.index);

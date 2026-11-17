@@ -1,18 +1,4 @@
 <!DOCTYPE html>
-<!--
-  CATERING PAGE
-  Same shared parts as the other pages (head, top bar, header, footer).
-  New ideas on this page:
-    1. "Jump links": links that scroll to a section on the SAME page, using id="..."
-    2. Prices laid out next to dish names with flexbox
-    3. <details>: a show/hide box with no JavaScript
-
-  Content source: the full printed catering menu (Catering Menu.pdf), which came from
-  the previous store. All of the old store's names were removed; items that used a
-  name were renamed and are marked "RENAMED". Brand-name references (Peter Luger,
-  Jack Daniel's) were made generic. Prices are from that menu: confirm them with the
-  store before the site goes live.
--->
 <html lang="en">
 
 <head>
@@ -20,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catering Menu | Food Dynasty Supermarket, Staten Island</title>
   <meta name="description" content="Catering from Food Dynasty Supermarket in Staten Island: giant heroes, hot and cold buffet packages, party trays of pasta, chicken, seafood, gluten-free options and more. Call 718-816-1100 to order.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
@@ -64,7 +49,7 @@
       </div>
     </section>
 
-    <!-- HOW TO ORDER: simple numbered steps = an ordered list <ol> -->
+    <!-- How to order -->
     <section class="section">
       <div class="container">
         <h2>How to Order</h2>
@@ -77,7 +62,7 @@
       </div>
     </section>
 
-    <!-- JUMP LINKS: href="#pasta" scrolls to the element with id="pasta" on this page -->
+    <!-- Jump links -->
     <nav class="category-nav" aria-label="Catering menu sections">
       <div class="container">
         <ul>
@@ -102,7 +87,7 @@
       </div>
     </nav>
 
-    <!-- ================= PACKAGES ================= -->
+    <!-- Packages -->
     <section class="section section-alt" id="packages">
       <div class="container">
         <h2>Buffet Packages</h2>
@@ -132,7 +117,6 @@
           </article>
 
           <article class="package-card">
-            <!-- RENAMED: was "[old store] Breakfast Buffet" -->
             <h3>Breakfast Buffet</h3>
             <p class="package-price">$14 <span>per person</span></p>
             <p>Muffins, danishes, bagels, croissants, coffee, tea and fresh orange juice, plus <strong>1 choice</strong> of home fries, bacon or sausage and <strong>2 choices</strong> of French toast, pancakes, scrambled eggs or an overstuffed breakfast wrap.</p>
@@ -140,8 +124,6 @@
 
         </div>
 
-        <!-- <details> is a built-in show/hide box: no JavaScript needed.
-             The <summary> is the part you click. -->
         <details class="info-box">
           <summary>Cold buffet meat &amp; cheese options</summary>
           <p><strong>Meats:</strong> Roast Beef, Turkey Breast, Virginia Ham, Roast Pork, Boiled Ham, Salami, Capicola, Pepperoni, Mortadella</p>
@@ -155,12 +137,11 @@
           <p><strong>Deposits:</strong> racks and water pans require a deposit, fully refunded when returned within 1 week.</p>
         </details>
 
-        <!-- RENAMED: was "[old store]'s Continental Breakfast" -->
         <p class="menu-note">Smaller breakfast? Our <strong>Continental Breakfast</strong> (muffins, danishes, bagels, croissants, fresh fruit, coffee, tea and orange juice) is $10 per person, minimum 20, paper goods included.</p>
       </div>
     </section>
 
-    <!-- ================= GIANT HEROES ================= -->
+    <!-- Giant heroes -->
     <section class="section menu-section" id="heroes">
       <div class="container">
         <h2>Giant Heroes</h2>
@@ -192,7 +173,6 @@
             <p>Crispy panko-crusted eggplant, fresh mozzarella, roasted peppers and lettuce, with homemade balsamic on the side.</p>
           </article>
           <article class="menu-item">
-            <!-- This item has its OWN price, so it gets the .menu-item-head layout -->
             <div class="menu-item-head">
               <h3>Build Your Own</h3>
               <span class="price">$29.99/ft</span>
@@ -203,15 +183,12 @@
       </div>
     </section>
 
-    <!-- ================= HOT PLATTERS =================
-         Two sizes now: the price shows "small / large" -->
     <section class="section section-alt menu-section" id="hot-platters">
       <div class="container">
         <h2>Hot Platters</h2>
         <p class="price-line">Prices: small platter / large platter</p>
         <div class="menu-items">
           <article class="menu-item">
-            <!-- "Jack Daniels BBQ" made generic (it's another company's brand name) -->
             <div class="menu-item-head"><h3>Chicken Wings</h3><span class="price">$60 / $100</span></div>
             <p>Seasoned fried wings with your choice of honey BBQ, whiskey BBQ or Buffalo sauce.</p>
           </article>
@@ -224,7 +201,6 @@
             <p>Eggplant rollatini, mozzarella sticks, stuffed mushroom caps, baked little neck clams, fried broccoli, zucchini sticks and mini rice balls, with marinara and lemon.</p>
           </article>
           <article class="menu-item">
-            <!-- RENAMED: was "[old store]'s Over The Top Hot Antipasto Platter" -->
             <div class="menu-item-head"><h3>Deluxe Hot Antipasto</h3><span class="price">$80 / $120</span></div>
             <p>Eggplant rollatini, fresh mozzarella sticks, homemade rice balls, baked clams, crabmeat-stuffed mushrooms, zucchini sticks and coconut shrimp, with marinara and lemon.</p>
           </article>
@@ -245,7 +221,6 @@
             <p>Cremini mushrooms filled with homemade crabmeat stuffing.</p>
           </article>
           <article class="menu-item">
-            <!-- "Peter Luger" made generic (it's a famous steakhouse's name) -->
             <div class="menu-item-head"><h3>Mini Sliders</h3><span class="price">$60 / $100</span></div>
             <p>A mix of classic, steakhouse-style and chicken sliders on potato buns.</p>
           </article>
@@ -253,7 +228,7 @@
       </div>
     </section>
 
-    <!-- ================= COLD PLATTERS ================= -->
+    <!-- Cold platters -->
     <section class="section menu-section" id="cold-platters">
       <div class="container">
         <h2>Cold Platters</h2>
@@ -268,7 +243,6 @@
             <p>Roasted peppers, marinated olives and artichokes, provolone, mozzarella bocconcini, sweet soppressata and pepperoni.</p>
           </article>
           <article class="menu-item">
-            <!-- RENAMED: was "Tom's Antipasto Platter" -->
             <div class="menu-item-head"><h3>Premium Antipasto</h3><span class="price">$80 / $120</span></div>
             <p>Sweet and hot soppressata, marinated mushrooms, sun-dried peppers, mozzarella bocconcini, artichokes and Parmigiano Reggiano.</p>
           </article>
@@ -324,9 +298,6 @@
       </div>
     </section>
 
-    <!-- ================= TRAYS =================
-         One half/full tray price for most dishes in each category,
-         so each dish is just a name in a list. -->
     <section class="section section-alt menu-section" id="pasta">
       <div class="container">
         <h2>Pasta</h2>
@@ -409,7 +380,6 @@
           <li>Beef Teriyaki</li>
           <li>Beef &amp; Broccoli</li>
           <li>Beef Rollatini</li>
-          <!-- These three cost more, so their prices are shown on the line itself -->
           <li>Braised Short Ribs <span>half $80 · full $110</span></li>
           <li>Beef Medallions <span>half $90 · full $160</span></li>
           <li>Grilled Skirt Steak <span>half $100 · full $180</span></li>
@@ -458,7 +428,7 @@
       </div>
     </section>
 
-    <!-- ================= GLUTEN-FREE ================= -->
+    <!-- Gluten-free -->
     <section class="section section-alt menu-section" id="gluten-free">
       <div class="container">
         <h2>Gluten-Free Options</h2>
@@ -502,7 +472,7 @@
       </div>
     </section>
 
-    <!-- ================= BREAKFAST ================= -->
+    <!-- Breakfast -->
     <section class="section section-alt menu-section" id="breakfast">
       <div class="container">
         <h2>Breakfast</h2>
@@ -520,7 +490,7 @@
       </div>
     </section>
 
-    <!-- ================= SALADS ================= -->
+    <!-- Salads -->
     <section class="section menu-section" id="salads">
       <div class="container">
         <h2>Salads</h2>
@@ -528,13 +498,10 @@
         <ul class="tray-list">
           <li>Tossed Salad</li>
           <li>Caesar Salad <span>with or without chicken</span></li>
-          <!-- RENAMED: was "Danielle Salad" -->
           <li>Arugula &amp; Orange Salad <span>walnuts, goat cheese</span></li>
-          <!-- RENAMED: was "[old store]'s Special Salad" -->
           <li>House Special Salad</li>
           <li>Waldorf Salad</li>
           <li>Chef Salad</li>
-          <!-- RENAMED: was "Amboy Special Salad" -->
           <li>Arugula, Pear &amp; Fig Salad</li>
           <li>Mediterranean Salad</li>
           <li>Mediterranean Pasta Salad</li>
@@ -542,13 +509,12 @@
           <li>Gentleman's Bowtie <span>sun-dried tomato &amp; eggplant</span></li>
           <li>Tri-Color Tortellini Salad</li>
           <li>Farfalle with Prosciutto &amp; Basil</li>
-          <!-- RENAMED: was "Enny Benny's Salad" -->
           <li>Southwest Bowtie Salad <span>black beans, corn, avocado</span></li>
         </ul>
       </div>
     </section>
 
-    <!-- ================= KIDS & BAKERY ================= -->
+    <!-- Kids & bakery -->
     <section class="section section-alt menu-section" id="kids">
       <div class="container">
         <h2>Kids Corner</h2>
@@ -573,7 +539,6 @@
             <p>Homemade cannolis and chocolate brownies dusted with powdered sugar.</p>
           </article>
           <article class="menu-item">
-            <!-- RENAMED: was "[old store] Cookie Tray" -->
             <div class="menu-item-head"><h3>Cookie Tray</h3><span class="price">$70 / $90</span></div>
             <p>Mini black &amp; white, lemon drop, cannoli and 7-layer cookies.</p>
           </article>
@@ -585,7 +550,7 @@
       </div>
     </section>
 
-    <!-- ================= POLICIES ================= -->
+    <!-- Policies -->
     <section class="section section-alt menu-section" id="policies">
       <div class="container">
         <h2>Ordering Policies</h2>
@@ -596,8 +561,6 @@
           <li>Rack and board deposits are fully refunded when returned within 1 week.</li>
           <li>All prices are subject to NYS sales tax and may change.</li>
         </ul>
-        <!-- The printed menu also offered "party planning needs" (tables, chairs, tents,
-             linens, bartenders). Left off until the store confirms it still offers them. -->
       </div>
     </section>
 
@@ -619,9 +582,6 @@
         <a href="https://maps.app.goo.gl/Aq28j9NJWY8t7ovy7">1071 Bay St, Staten Island, NY 10305</a><br>
         <a href="tel:+17188161100">718-816-1100</a>
       </address>
-      <!-- Social media. target="_blank" opens them in a new tab; rel="noopener" is a
-           security setting for links that open new tabs. The <svg> drawings are the icons,
-           and aria-hidden hides them from screen readers (the link text already says it). -->
       <p class="social">
         <a href="https://www.instagram.com/fooddynasty_statenisland/" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>

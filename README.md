@@ -1,39 +1,61 @@
 # Food Dynasty Supermarket Website
 
-A responsive website for **Food Dynasty Supermarket**, a family-owned grocery store at 1071 Bay St, Staten Island, NY. Built to replace the store's drag-and-drop site with a faster, clearer site that puts the supermarket (departments and weekly sales) first.
+The website for **Food Dynasty Supermarket**, a family-owned grocery store at 1071 Bay St, Staten Island, NY. I built it to replace the store's Wix site and to give customers a faster, clearer way to see hours, weekly deals and catering, and to order online.
 
 **Live site:** https://food-dynasty.github.io/Food-Dynasty-Website/
+**Companion staff app:** [Food-Dynasty-orders](https://github.com/Food-Dynasty/Food-Dynasty-orders)
 
-## Pages
+## Why I built it
 
-| Page | What it does |
+The old site had problems that cost the store customers:
+- the hours didn't match the store's own flyer
+- the social icons linked to the website builder instead of the store
+- the catering menu still showed the previous store's name
+- there was no way to order online
+
+On top of that, the weekly sales changed every week, and nobody at the store could update the site without paying for help.
+
+## What it does
+
+| Page | Purpose |
 |---|---|
-| Home | Hours, directions, tap-to-call, weekly deals and departments at a glance |
-| Departments | Produce, meat, prepared foods and grocery, using real store photos |
-| Weekly Sales | This week's ad uploaded by staff (falls back to the store's Key Food ad), coupons and app |
-| Holiday Menu | Thanksgiving / Christmas / Easter dinner menu with a matching color theme; uploaded by staff, hidden when there isn't one |
-| Buffet Menu | The daily hot buffet menu |
-| Catering | Full catering menu (90+ items) with sticky jump links by category |
-| About Us | Store story, hours and an embedded Google Map |
+| Home | Hours, payment options, this week's free deals, the holiday dinner feature, ways to shop from home, store perks |
+| Weekly Sales | This week's ad, uploaded by staff (falls back to the store's Key Food ad page) |
+| Holiday Menu | Thanksgiving, Christmas or Easter dinner menu, themed per holiday; hidden when there isn't one |
+| Order Catering Online | Full catering menu with a tray, live totals with NYC tax, pickup or delivery, and required side and pie choices for holiday dinners |
+| Send Us Your Grocery List | Customers type a list and pick a delivery time; staff shop it and call with the total |
+| Departments, Buffet, Catering, About | Store info, the daily buffet, the full catering menu, and a map |
+
+Orders from the website go straight into the staff app. Nothing goes through email.
+
+## Decisions I made (and why)
+
+- **No framework, no build step.** It's plain HTML, CSS and JavaScript on GitHub Pages. Hosting is free and the pages load fast. Anyone the store hires later can open the files and understand them.
+- **Staff update content from the app, not the code.** The weekly ad and holiday menus are uploaded as a PDF or photos. PDF pages are turned into images in the browser, because phones display images better than embedded PDFs. Every upload has start and end dates, so old deals come down on their own.
+- **Orders go into a database, not an inbox.** My first version sent orders by email through a form service, and some of them never arrived. I switched to a Supabase database function that the website can only *add* orders to. It checks every field and limits each phone number to 5 orders a day.
+- **Prices live in one place.** The catering menu is a single data file shared with the staff app. The app recalculates every online order's price, so a tampered order gets flagged.
+- **Seasonal items run on their own.** Thanksgiving dinners appear on the order page from Nov 1 until 3 days before Thanksgiving. The 4th Thursday is worked out each year.
+- **Mobile first.** Most customers visit on a phone, so every layout starts at phone width and grows from there.
+
+## Problems I ran into
+
+- **Slow pages.** The store photos were 2–4 MB each. I resized and compressed them from 14.9 MB down to 2.7 MB in total.
+- **Old styles after updates.** Browsers kept serving cached CSS, so customers saw new pages with old styling. Fixed with version numbers on every CSS and JS link.
+- **Animations hiding content.** The scroll-in animations sometimes left content invisible. I changed them so only content below the screen starts hidden, and anything still hidden is shown after scrolling stops.
+- **A 20 MB weekly ad that wouldn't upload.** It was over the storage limit, and the page was too tall for phone browsers to render. Splitting it into page images fixed both.
+- **Small layout bugs**, such as CSS specificity conflicts and date fields overflowing on small phones, found by testing at phone and desktop widths.
 
 ## Built with
 
-- **HTML5**: semantic tags (`header`, `nav`, `main`, `section`, `article`, `footer`, `address`)
-- **CSS3**: custom properties (variables), Flexbox, CSS Grid, media queries (mobile-first), `position: sticky`
-- No frameworks or build tools
-
-## Problems solved
-
-- **Wrong and inconsistent info on the old site**: store hours differed across sources, footer social icons linked to the website builder's own accounts, and the catering menu still carried a previous store's name. All fixed.
-- **Slow pages**: photos were 2–4 MB each. Resized and compressed them from 14.9 MB to 2.7 MB total (82% smaller).
-- **Weekly sales that stay current with no upkeep**: Key Food's weekly ad can't be embedded in another site, so the site links to the store's permanent Key Food ad page, which always shows the current week.
-- **Staff update the site without touching code**: the weekly ad and holiday menus are uploaded (PDF or photos) in the staff app; PDFs are turned into page pictures in the browser so they read well on phones, and `js/flyers.js` shows the newest one whose dates include today.
-- **CSS specificity and rule-order bugs**, found and fixed while testing on phone and desktop widths.
-- **Accessibility**: alt text on every image, one `h1` per page, keyboard-visible focus styles, `aria-current` on the active menu link.
+- HTML5 (semantic markup, accessible forms, `aria` attributes)
+- CSS3 (custom properties, Flexbox, Grid, media queries, `@supports`, reduced-motion support)
+- JavaScript (no libraries on the public site)
+- Supabase (Postgres, row-level security, storage) for orders and uploaded flyers
+- GitHub Pages for hosting
 
 ## Run it locally
 
-No install needed: open `index.html` in any browser.
+Open `index.html` in a browser, or serve the folder with any static server.
 
 ## Credits
 

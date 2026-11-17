@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ONLINE CATERING ORDER REQUEST
-  This is the first page with real JavaScript. Three files work together:
-    js/catering-menu.js  the menu items and prices (data)
-    js/order.js          builds the menu, runs the tray (cart), checks and sends the form
-    this file            the empty "slots" that order.js fills in
-  The menu list and the tray below start EMPTY in the HTML; JavaScript fills them in.
-
-  Orders go straight into the FD Orders staff app (see ORDERS_DB_URL at the top of
-  js/order.js). If ORDERS_DB_URL is emptied, the page switches to TEST MODE and shows a
-  yellow banner.
--->
 <html lang="en">
 
 <head>
@@ -18,17 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Catering Online | Food Dynasty Supermarket, Staten Island</title>
   <meta name="description" content="Send a catering order request to Food Dynasty Supermarket in Staten Island. Pick trays, platters and heroes online, and we'll call to confirm.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="css/styles.css?v=20261116j">
   <script src="js/animate.js?v=20261116j" defer></script>
   <script src="js/flyers.js?v=20261116j" defer></script>
-
-  <!-- "defer" = download the scripts now, but run them only after the page's HTML is
-       fully read. That way the empty slots exist before the JavaScript fills them in.
-       Order matters: the menu data must load before the code that uses it. -->
   <script src="js/catering-menu.js?v=20261116j" defer></script>
   <script src="js/order.js?v=20261116j" defer></script>
 </head>
@@ -67,8 +50,6 @@
       </div>
     </section>
 
-    <!-- Shown only while ORDERS_DB_URL in js/order.js is empty. order.js removes
-         the "hidden" attribute to display it. -->
     <div class="test-banner" id="test-banner" hidden>
       <strong>TEST MODE:</strong> orders on this page are not sent anywhere yet.
     </div>
@@ -84,23 +65,21 @@
         <!-- Two columns on computers: menu on the left, tray + form on the right -->
         <div class="order-layout">
 
-          <!-- 1) THE MENU: order.js builds one collapsible <details> box per category here -->
+          <!-- Menu (built by js/order.js) -->
           <div class="order-menu" id="order-menu" aria-label="Catering menu">
             <noscript>
               <p>Online ordering needs JavaScript turned on. You can also call us at 718-816-1100.</p>
             </noscript>
           </div>
 
-          <!-- 2) THE TRAY (cart) + the customer form -->
+          <!-- Tray and customer form -->
           <aside class="order-side" id="your-order" aria-labelledby="tray-title">
             <div class="tray">
               <h2 id="tray-title">Your Tray</h2>
 
-              <!-- aria-live="polite": screen readers announce changes here
-                   (like "item added") without the user having to look for them -->
               <div id="tray-lines" aria-live="polite"></div>
 
-              <!-- order.js fills in every number here (see trayTotals() in js/order.js) -->
+              <!-- Totals (filled by js/order.js) -->
               <div class="tray-totals" id="tray-totals" hidden>
                 <p class="tray-small"><span>Subtotal</span> <span id="tray-subtotal">$0.00</span></p>
                 <p class="tray-small" id="tray-delivery-row" hidden><span>Delivery fee</span> <span id="tray-delivery">$0.00</span></p>
@@ -111,9 +90,6 @@
               </div>
             </div>
 
-            <!-- THE FORM
-                 novalidate = we check the fields ourselves in order.js, so we can show
-                 friendly messages; "required" on each field still documents what's needed. -->
             <form class="order-form" id="order-form" novalidate>
               <h2>Your Details</h2>
 
@@ -126,9 +102,6 @@
               <label for="f-email">Email <span class="optional">(optional)</span></label>
               <input id="f-email" name="email" type="email" autocomplete="email">
 
-              <!-- PICKUP OR DELIVERY
-                   <fieldset> groups related choices; <legend> is the group's title.
-                   Radio buttons with the SAME name="fulfillment" = only one can be picked. -->
               <fieldset class="choice-group">
                 <legend>Pickup or delivery?</legend>
                 <label class="choice">
@@ -163,8 +136,6 @@
                 <p class="field-note">A $15.00 delivery fee is added to your total. We'll confirm your address and delivery area when we call.</p>
               </div>
 
-              <!-- Two fields side by side. The labels say "Pickup ..." or "Delivery ...":
-                   order.js changes the text in the <span>s when the choice changes. -->
               <div class="form-row">
                 <div>
                   <label for="f-date"><span class="when-word">Pickup</span> date</label>
@@ -180,8 +151,7 @@
               <label for="f-notes">Notes for the kitchen <span class="optional">(optional)</span></label>
               <textarea id="f-notes" name="notes" rows="3" placeholder="Allergies, buffet choices, number of guests..."></textarea>
 
-              <!-- HONEYPOT: a hidden field real people never see or fill in. Spam bots fill in
-                   every field, so if this one has text, order.js quietly ignores the order. -->
+              <!-- Honeypot -->
               <div class="honeypot" aria-hidden="true">
                 <label for="f-website">Leave this empty</label>
                 <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
@@ -226,9 +196,6 @@
         <a href="https://maps.app.goo.gl/Aq28j9NJWY8t7ovy7">1071 Bay St, Staten Island, NY 10305</a><br>
         <a href="tel:+17188161100">718-816-1100</a>
       </address>
-      <!-- Social media. target="_blank" opens them in a new tab; rel="noopener" is a
-           security setting for links that open new tabs. The <svg> drawings are the icons,
-           and aria-hidden hides them from screen readers (the link text already says it). -->
       <p class="social">
         <a href="https://www.instagram.com/fooddynasty_statenisland/" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>

@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-<!--
-  SEND US YOUR GROCERY LIST
-  The customer types their list; it goes straight into the FD Orders staff app as a
-  grocery delivery (with the in-basket checklist). Staff shop it at in-store prices,
-  enter the register total, and call the customer with it. No prices on this page.
-  Logic: js/grocery.js. Database "door": submit_grocery_list (supabase/online-grocery.sql
-  in the food-dynasty-orders project).
--->
 <html lang="en">
 
 <head>
@@ -14,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Send Us Your Grocery List | Food Dynasty Supermarket, Staten Island</title>
   <meta name="description" content="Send your grocery list to Food Dynasty Supermarket in Staten Island. We shop it at in-store prices, call you with the total, and deliver free on orders over $50.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
@@ -60,7 +51,7 @@
     <section class="section">
       <div class="container">
 
-        <!-- How it works: an ordered list, because the steps happen in order -->
+        <!-- How it works -->
         <ol class="list-steps">
           <li><strong>Send your list</strong> below: one item per line.</li>
           <li><strong>We shop it</strong> at regular in-store prices, including this week's sales.</li>
@@ -76,7 +67,7 @@
             placeholder="Cream-O-Land whole milk, 1 gallon&#10;5 lb chicken thighs&#10;1 dozen large eggs&#10;Goya black beans, 2 cans&#10;Bananas, 1 bunch"></textarea>
           <p class="field-note" id="g-count">0 items</p>
 
-          <!-- What to do when something's out of stock. Radio buttons = pick one. -->
+          <!-- Substitution preference -->
           <fieldset class="choice-group">
             <legend>If an item is out of stock</legend>
             <label class="choice"><input type="radio" name="subs" value="Call me" checked> <span>Call me first</span></label>
@@ -124,7 +115,7 @@
           <label for="g-notes">Notes <span class="optional">(optional)</span></label>
           <textarea id="g-notes" rows="2" placeholder="Gate code, ring the bell, green bananas..."></textarea>
 
-          <!-- Honeypot: hidden from people, filled in by spam bots -->
+          <!-- Honeypot field (spam protection) -->
           <div class="honeypot" aria-hidden="true">
             <label for="g-website">Leave this empty</label>
             <input id="g-website" type="text" tabindex="-1" autocomplete="off">

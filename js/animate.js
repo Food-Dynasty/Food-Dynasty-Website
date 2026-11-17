@@ -1,24 +1,8 @@
-/*
-  SMOOTH SCROLL-IN ANIMATIONS
-  ---------------------------
-  Cards and headings further down the page gently fade and slide up as you
-  scroll to them.
-
-  How it works:
-    1. At load, anything BELOW the visible screen gets the "reveal" class
-       (CSS makes it invisible and a bit lower). Anything already on screen is
-       left alone, so nothing ever "flashes" or stays hidden at the top.
-    2. On scroll, we check which hidden elements have reached the screen and
-       add "is-visible" (CSS animates them into place).
-    3. After the animation, both classes are removed so hover effects work.
-
-  FAIL-SAFE: content must always show. Elements are only hidden by this script
-  (if it fails to load, nothing is hidden), only things below the screen are
-  hidden, and the checks use plain timers, which keep running even in
-  situations where the browser pauses animation frames.
-
-  Skipped completely for people who turned on "Reduce motion" in their settings.
-*/
+/**
+ * Scroll-reveal animations for cards and headings.
+ * Only elements below the fold are hidden, so content stays visible if the script
+ * fails. Skipped entirely when the visitor prefers reduced motion.
+ */
 (function () {
   "use strict";
 
@@ -49,11 +33,6 @@
     if (!pending.length) window.removeEventListener("scroll", onScroll);
   }
 
-  // THROTTLING: scrolling fires dozens of events per second. This runs check()
-  // at most once every 60ms, which looks instant but saves a lot of work.
-  // Plus one final "catch-up" check 150ms after scrolling STOPS: without it, the
-  // last bit of scrolling could happen during the 60ms pause and be missed,
-  // leaving items hidden until the next scroll. (A bug found while testing.)
   let waiting = false;
   let finalCheck = null;
   function onScroll() {

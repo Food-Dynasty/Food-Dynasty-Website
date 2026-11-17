@@ -1,19 +1,7 @@
-/*
-  FLYERS: the weekly sales ad and holiday menus uploaded by staff
-  ----------------------------------------------------------------
-  Staff upload a PDF or pictures in the FD Orders app (Website tab). This file asks
-  the database for the newest one that's showing today and puts it on the page.
-
-  What it does depends on what the page has:
-    every page               adds a holiday link to the menu while a holiday menu is up
-    #holiday-feature (home)  a big holiday section (if "Feature on homepage" is on)
-    #headline-deals (home)   this week's 1-3 best offers, in big letters
-    #weekly-flyer (sales)    this week's ad pictures
-    #holiday-page (holiday)  the whole holiday page: title, note, pictures, colors
-
-  The database only lets the public READ flyers (see supabase/website-flyers.sql in
-  the FD Orders project). The key below is the public "publishable" key.
-*/
+/**
+ * Loads staff-uploaded flyers from Supabase (public read-only access) and renders
+ * the weekly ad, homepage deals, holiday feature section, holiday page and nav link.
+ */
 "use strict";
 
 (function () {
@@ -26,9 +14,6 @@
     summer: "Summer Menu", general: "Holiday Menu"
   };
 
-  // Asks the database for the newest flyer of a kind ("weekly" or "holiday").
-  // Gives back null if there isn't one (or the internet hiccups): pages then just
-  // show their normal content.
   async function currentFlyer(kind) {
     try {
       const response = await fetch(
@@ -43,7 +28,7 @@
     }
   }
 
-  // Makes typed text safe to put inside HTML
+  // Escape text for safe insertion into HTML
   function esc(text) {
     return String(text == null ? "" : text).replace(/[&<>"']/g, function (ch) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
@@ -55,8 +40,6 @@
     return new Date(text + "T12:00").toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
   }
 
-  // The flyer's pages as pictures. Each one opens full size in a new tab when tapped,
-  // so people can zoom in on small print.
   function pagesHTML(flyer, altText) {
     return (flyer.pages || []).map(function (url, i) {
       return '<a class="flyer-page" href="' + esc(url) + '" target="_blank" rel="noopener">' +
@@ -87,8 +70,6 @@
     list.insertBefore(item, catering ? catering.parentElement.nextSibling : null);
   }
 
-  // The holiday's specials on the catering menu (js/catering-menu.js), if that file is on
-  // this page and the specials can still be ordered online. Otherwise an empty list.
   function holidaySpecials(theme) {
     if (typeof CATERING_MENU === "undefined") return [];
     const category = CATERING_MENU.find(function (c) { return c.season === theme && categoryInSeason(c); });
@@ -100,8 +81,6 @@
     return "$" + (Number.isInteger(amount) ? amount : amount.toFixed(2));
   }
 
-  // ---------- Homepage: the big holiday section ----------
-  // Shown only while a holiday menu is up AND its "Feature on homepage" switch is on.
   function fillHolidayFeature(flyer) {
     const box = document.getElementById("holiday-feature");
     if (!box || flyer.featured === false) return;
@@ -114,8 +93,6 @@
       part("note").hidden = false;
     }
 
-    // Prices straight from the catering menu, so they always match the order page.
-    // "Thanksgiving Dinner for 8–10" -> "Dinner for 8–10" (the title already says Thanksgiving)
     const specials = holidaySpecials(flyer.theme);
     if (specials.length) {
       const prefix = (THEME_NAMES[flyer.theme] || "") + " ";
@@ -125,7 +102,7 @@
         return "<li><span>" + esc(name) + "</span><strong>" + price(amount) + "</strong></li>";
       }).join("");
       part("prices").hidden = false;
-      part("order").hidden = false;   // "Order Online" only while they can be ordered online
+      part("order").hidden = false;
     }
 
     if ((flyer.pages || [])[0]) {
@@ -163,8 +140,6 @@
     if (!lines.length && !pictures.length) return;
 
     if (pictures.length) {
-      // DEAL PICTURES (cut from the ad by staff): shown big, each one a link to the full ad.
-      // The deal lines, if any, become each picture's description for screen readers.
       list.classList.add("deal-pictures");
       list.innerHTML = pictures.map(function (url, i) {
         return '<li><a class="deal-picture" href="sales.html">' +
@@ -172,9 +147,6 @@
                "</a></li>";
       }).join("");
     } else {
-    // A line starting with FREE becomes a card with a big yellow FREE tag:
-    //   "FREE turkey with a $250 purchase" -> [FREE] turkey with a $250 purchase
-    // Other lines show as plain deal cards.
     list.innerHTML = lines.map(function (line) {
       const free = line.match(/^\s*free\b[\s:!-]*(.*)$/i);
       return free
@@ -217,8 +189,6 @@
     page.hidden = false;
   }
 
-  // ---------- Start ----------
-  // Both requests start at the same time; each part fills in when its answer arrives.
   const holiday = currentFlyer("holiday");
   holiday.then(function (flyer) {
     if (flyer && (flyer.pages || []).length) {

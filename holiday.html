@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<!--
-  HOLIDAY MENU PAGE (Thanksgiving, Christmas, Easter...)
-  One page for every holiday. Staff upload the menu (PDF or pictures) in the FD Orders
-  app, Website tab, and pick a "look". js/flyers.js then fills this page in:
-    - the title and note (#holiday-title, #holiday-note)
-    - the menu pictures (#holiday-pages)
-    - the colors and decorations: it sets data-theme="thanksgiving" (or christmas,
-      easter, summer, general) on <body>, and the CSS in section 11j does the rest.
-  When no holiday menu is up, the "Coming soon" box (#holiday-none) shows instead.
--->
 <html lang="en">
 
 <head>
@@ -16,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Holiday Dinner Menu | Food Dynasty Supermarket, Staten Island</title>
   <meta name="description" content="Thanksgiving, Christmas and Easter dinners from Food Dynasty Supermarket in Staten Island: cooked turkey packages, trays and sides. Call 718-816-1100 to order.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
@@ -25,7 +14,7 @@
   <script src="js/flyers.js?v=20261116j" defer></script>
 </head>
 
-<!-- holiday-loading: hides the title until we know which holiday it is (no flicker) -->
+<!-- holiday-loading hides the title until the theme is known -->
 <body class="holiday-body holiday-loading" data-theme="general">
 
   <div class="top-bar">
@@ -54,8 +43,6 @@
   <main>
 
     <section class="hero holiday-hero">
-      <!-- Falling leaves / snowflakes / flowers, depending on the holiday.
-           Purely decoration, so screen readers skip it (aria-hidden). -->
       <div class="holiday-decor" aria-hidden="true">
         <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
@@ -69,7 +56,7 @@
       </div>
     </section>
 
-    <!-- THE MENU: filled in by js/flyers.js -->
+    <!-- Menu (filled by js/flyers.js) -->
     <section class="section" id="holiday-page" hidden>
       <div class="container">
         <h2>The Menu</h2>
