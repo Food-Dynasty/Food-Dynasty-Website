@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!--
+  HOLIDAY MENU PAGE (Thanksgiving, Christmas, Easter...)
+  One page for every holiday. Staff upload the menu (PDF or pictures) in the FD Orders
+  app, Website tab, and pick a "look". js/flyers.js then fills this page in:
+    - the title and note (#holiday-title, #holiday-note)
+    - the menu pictures (#holiday-pages)
+    - the colors and decorations: it sets data-theme="thanksgiving" (or christmas,
+      easter, summer, general) on <body>, and the CSS in section 11j does the rest.
+  When no holiday menu is up, the "Coming soon" box (#holiday-none) shows instead.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holiday Dinner Menu | Food Dynasty Supermarket, Staten Island</title>
+  <meta name="description" content="Thanksgiving, Christmas and Easter dinners from Food Dynasty Supermarket in Staten Island: cooked turkey packages, trays and sides. Call 718-816-1100 to order.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css?v=20261116a">
+  <script src="js/animate.js?v=20261116a" defer></script>
+  <script src="js/flyers.js?v=20261116a" defer></script>
+</head>
+
+<!-- holiday-loading: hides the title until we know which holiday it is (no flicker) -->
+<body class="holiday-body holiday-loading" data-theme="general">
+
+  <div class="top-bar">
+    Open 7 days · Mon–Sat 7AM–9PM · Sun 7AM–8PM · 1071 Bay St, Staten Island
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html">
+        <img class="logo" src="images/logo.png" alt="Food Dynasty home">
+      </a>
+      <nav class="main-nav" aria-label="Main menu">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="departments.html">Departments</a></li>
+          <li><a href="sales.html">Weekly Sales</a></li>
+          <li><a href="buffet.html">Buffet Menu</a></li>
+          <li><a href="catering.html">Catering</a></li>
+          <li><a class="nav-holiday" href="holiday.html" aria-current="page">Holiday Menu</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero holiday-hero">
+      <!-- Falling leaves / snowflakes / flowers, depending on the holiday.
+           Purely decoration, so screen readers skip it (aria-hidden). -->
+      <div class="holiday-decor" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="container">
+        <p class="eyebrow">Holiday Dinners</p>
+        <h1 id="holiday-title">Holiday Menu</h1>
+        <p class="holiday-note" id="holiday-note" hidden></p>
+        <p>Let us do the cooking. Call or stop by the deli counter to place your order.</p>
+        <a class="button" href="tel:+17188161100">Call 718-816-1100</a>
+        <a class="button button-outline" href="#holiday-page" id="holiday-jump">See the Menu</a>
+      </div>
+    </section>
+
+    <!-- THE MENU: filled in by js/flyers.js -->
+    <section class="section" id="holiday-page" hidden>
+      <div class="container">
+        <h2>The Menu</h2>
+        <div class="flyer-pages" id="holiday-pages"></div>
+        <p class="flyer-hint">Tap a page to see it full size.</p>
+        <p class="center-button">
+          <a class="button button-dark" id="holiday-pdf" href="#" target="_blank" rel="noopener" hidden>Download PDF</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Shown when no holiday menu is up right now -->
+    <section class="section" id="holiday-none" hidden>
+      <div class="container holiday-none">
+        <h2>Holiday Menus Coming Soon</h2>
+        <p>We post our Thanksgiving, Christmas and Easter dinner menus here a few weeks before each holiday.</p>
+        <p>Planning a party before then? Our catering menu is ready any time.</p>
+        <a class="button button-dark" href="catering.html">See the Catering Menu</a>
+      </div>
+    </section>
+
+    <!-- HOW TO ORDER -->
+    <section class="section section-alt">
+      <div class="container">
+        <h2>How to Order</h2>
+        <div class="grid-3">
+          <article class="save-card">
+            <span class="save-number">1</span>
+            <h3>Pick Your Dinner</h3>
+            <p>Choose a package and your sides from the menu.</p>
+          </article>
+          <article class="save-card">
+            <span class="save-number">2</span>
+            <h3>Order Early</h3>
+            <p>Call <a href="tel:+17188161100">718-816-1100</a> or order at the deli counter. Holiday dinners sell out!</p>
+          </article>
+          <article class="save-card">
+            <span class="save-number">3</span>
+            <h3>Pick It Up</h3>
+            <p>Pick up your dinner at 1071 Bay St and enjoy the holiday.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <address>
+        <strong>Food Dynasty Supermarket</strong><br>
+        <a href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">1071 Bay St, Staten Island, NY 10305</a><br>
+        <a href="tel:+17188161100">718-816-1100</a>
+      </address>
+      <p class="social">
+        <a href="https://www.instagram.com/fooddynasty_statenisland/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61573029486640" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.5V4.4c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8v3h2.6V21h2.9z"/></svg>
+          Facebook
+        </a>
+      </p>
+      <p>&copy; 2026 Food Dynasty Supermarket</p>
+    </div>
+  </footer>
+
+</body>
+</html>

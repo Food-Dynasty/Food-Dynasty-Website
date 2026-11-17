@@ -35,8 +35,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
 
   <!-- NEW: connect our own stylesheet. Without this line, the CSS file does nothing. -->
-  <link rel="stylesheet" href="css/styles.css?v=20261115i">
-  <script src="js/animate.js?v=20261115i" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261116a">
+  <script src="js/animate.js?v=20261116a" defer></script>
+  <script src="js/flyers.js?v=20261116a" defer></script>
 </head>
 
 <!-- ===================== BODY =====================
@@ -101,6 +102,15 @@
              in Google Maps) that opens the store's exact listing. -->
         <a class="button" href="https://maps.app.goo.gl/2q6h8iWK6vrLJzq49">Get Directions</a>
         <a class="button button-outline" href="tel:+17188161100">Call 718-816-1100</a>
+      </div>
+    </section>
+
+    <!-- HOLIDAY BANNER: hidden until js/flyers.js finds a holiday menu uploaded in the
+         FD Orders app. Then it fills in the title and note and shows the banner. -->
+    <section class="holiday-banner" id="holiday-banner" data-theme="general" hidden>
+      <div class="container">
+        <p><strong data-title>Holiday Menu</strong> <span data-note></span></p>
+        <a class="button" href="holiday.html">See the Menu</a>
       </div>
     </section>
 

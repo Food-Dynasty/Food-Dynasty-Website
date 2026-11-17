@@ -1540,6 +1540,233 @@ html {
 }
 
 
+/* ============ 11j. HOLIDAY MENUS + UPLOADED FLYERS ============
+   Staff upload flyers in the FD Orders app; js/flyers.js shows them.
+
+   THEMES: each holiday sets 4 colors as variables. Whatever has data-theme="..."
+   (the holiday page's <body>, or the homepage banner) uses that holiday's colors.
+     --hol-dark    darkest color (bottom of the banner)
+     --hol-main    main color
+     --hol-accent  buttons and highlights
+     --hol-soft    light background                                               */
+[data-theme] {
+  --hol-dark: #111111;
+  --hol-main: #333333;
+  --hol-accent: var(--yellow);
+  --hol-soft: var(--gray-light);
+  --hol-icon: "★";
+}
+
+[data-theme="thanksgiving"] {
+  --hol-dark: #4a1a0e;   /* roasted brown */
+  --hol-main: #8f3418;   /* cranberry rust, like the printed ad */
+  --hol-accent: #f2a93b; /* pumpkin gold */
+  --hol-soft: #fdf3e7;
+  --hol-icon: "🍂";
+}
+
+[data-theme="christmas"] {
+  --hol-dark: #0c3324;
+  --hol-main: #14532d;
+  --hol-accent: #f6c344;
+  --hol-soft: #f1f8f2;
+  --hol-icon: "❄";
+}
+
+[data-theme="easter"] {
+  --hol-dark: #3d2a6b;
+  --hol-main: #6d4bb3;
+  --hol-accent: #ffd86b;
+  --hol-soft: #f7f2fc;
+  --hol-icon: "🌷";
+}
+
+[data-theme="summer"] {
+  --hol-dark: #10285e;
+  --hol-main: #1f4fae;
+  --hol-accent: var(--yellow);
+  --hol-soft: #eef4fc;
+  --hol-icon: "☀";
+}
+
+/* The holiday link in the menu (added by js/flyers.js while a holiday menu is up) */
+.main-nav a.nav-holiday {
+  color: #f2a93b;
+}
+
+.main-nav a.nav-holiday[aria-current="page"] {
+  color: var(--yellow);
+}
+
+/* --- Holiday page hero: the holiday's colors instead of the store photo --- */
+.holiday-hero {
+  position: relative;
+  overflow: hidden;   /* the falling decorations stay inside the banner */
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.12), transparent 60%),
+    linear-gradient(160deg, var(--hol-main), var(--hol-dark));
+}
+
+.holiday-hero .container {
+  position: relative;   /* sits on top of the decorations */
+}
+
+.holiday-hero .eyebrow {
+  color: var(--hol-accent);
+}
+
+.holiday-hero .button {
+  background: var(--hol-accent);
+}
+
+.holiday-hero .button:hover,
+.holiday-hero .button:focus-visible {
+  background: white;
+}
+
+.holiday-hero .button-outline {
+  background: transparent;
+}
+
+/* The note staff typed ("Order by Nov 23..."): a see-through box that stands out */
+.holiday-hero .holiday-note {
+  display: inline-block;
+  max-width: 560px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 2px solid var(--hol-accent);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 700;
+}
+
+/* While loading, hide the title so "Holiday Menu" doesn't flash before "Thanksgiving Dinner" */
+.holiday-loading #holiday-title {
+  visibility: hidden;
+}
+
+/* --- Falling decorations: 7 icons drifting down, each at its own spot and speed --- */
+.holiday-decor span {
+  position: absolute;
+  top: -40px;
+  font-size: 1.6rem;
+  opacity: 0.55;
+  animation: holiday-fall 14s linear infinite;
+}
+
+.holiday-decor span::before {
+  content: var(--hol-icon);
+}
+
+.holiday-decor span:nth-child(1) { left: 4%;  animation-delay: 0s;   font-size: 1.3rem; }
+.holiday-decor span:nth-child(2) { left: 18%; animation-delay: -6s;  animation-duration: 17s; }
+.holiday-decor span:nth-child(3) { left: 32%; animation-delay: -11s; font-size: 1.1rem; }
+.holiday-decor span:nth-child(4) { left: 68%; animation-delay: -3s;  animation-duration: 16s; }
+.holiday-decor span:nth-child(5) { left: 80%; animation-delay: -9s;  font-size: 2rem; }
+.holiday-decor span:nth-child(6) { left: 92%; animation-delay: -1s;  animation-duration: 19s; }
+.holiday-decor span:nth-child(7) { left: 55%; animation-delay: -13s; font-size: 1.2rem; }
+
+/* @keyframes = the steps of an animation: start above the banner, drift down while
+   swaying left and right and turning, end below it */
+@keyframes holiday-fall {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(24px, 120px) rotate(60deg); }
+  50%  { transform: translate(-12px, 240px) rotate(140deg); }
+  75%  { transform: translate(20px, 360px) rotate(220deg); }
+  100% { transform: translate(0, 520px) rotate(300deg); }
+}
+
+/* Visitors who turned on "Reduce motion": no falling, just a few still icons */
+@media (prefers-reduced-motion: reduce) {
+  .holiday-decor span {
+    animation: none;
+    top: 20px;
+  }
+}
+
+/* The holiday page uses the soft holiday color behind the menu */
+.holiday-body #holiday-page {
+  background: var(--hol-soft);
+}
+
+.holiday-body .save-number {
+  background: var(--hol-accent);
+}
+
+.holiday-none {
+  text-align: center;
+  max-width: 640px;
+}
+
+/* --- Flyer pages (holiday menu and weekly ad): big pictures, one under the other --- */
+.flyer-pages {
+  display: grid;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.flyer-page {
+  display: block;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.flyer-page:hover,
+.flyer-page:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.flyer-page img {
+  display: block;
+  width: 100%;
+}
+
+.flyer-dates {
+  text-align: center;
+  font-weight: 700;
+  margin: -16px 0 24px;
+}
+
+.flyer-hint {
+  text-align: center;
+  color: #666666;
+  font-size: 0.9rem;
+  margin: 16px 0 0;
+}
+
+/* --- Homepage holiday banner --- */
+.holiday-banner {
+  background: linear-gradient(120deg, var(--hol-main), var(--hol-dark));
+  color: white;
+  padding: 18px 0;
+  text-align: center;
+}
+
+.holiday-banner p {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.holiday-banner strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--hol-accent);
+}
+
+.holiday-banner .button {
+  background: var(--hol-accent);
+}
+
+.holiday-banner .button:hover,
+.holiday-banner .button:focus-visible {
+  background: white;
+}
+
+
 /* ============ 12. BIGGER SCREENS ============
    A MEDIA QUERY: rules inside only apply when the screen is at least 768px wide.
    Everything above is designed for phones first ("mobile-first"), then we

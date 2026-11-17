@@ -20,8 +20,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261115i">
-  <script src="js/animate.js?v=20261115i" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261116a">
+  <script src="js/animate.js?v=20261116a" defer></script>
+  <script src="js/flyers.js?v=20261116a" defer></script>
 </head>
 
 <body>
@@ -60,6 +61,12 @@
         <p class="hero-small">Opens our weekly ad on keyfood.com in a new tab.</p>
       </div>
     </section>
+
+    <!-- ================= THIS WEEK'S AD (uploaded by staff) =================
+         Empty and hidden until js/flyers.js finds a weekly ad uploaded in the FD Orders
+         app (Website tab). Then the pages show right here. If none is uploaded,
+         the Key Food link above still works. -->
+    <section class="section section-alt flyer-section" id="weekly-flyer" hidden></section>
 
     <!-- ================= 3 WAYS TO SAVE ================= -->
     <section class="section">
