@@ -160,9 +160,14 @@
     if (!list || !flyer || !flyer.headline) return;
     const lines = flyer.headline.split("\n").filter(function (line) { return line.trim(); });
     if (!lines.length) return;
-    // A word like FREE gets the yellow highlight, so the offer jumps out
+    // A line starting with FREE becomes a card with a big yellow FREE tag:
+    //   "FREE turkey with a $250 purchase" -> [FREE] turkey with a $250 purchase
+    // Other lines show as plain deal cards.
     list.innerHTML = lines.map(function (line) {
-      return "<li>" + esc(line).replace(/\b(FREE|Free|free)\b/g, '<span class="deal-free">$1</span>') + "</li>";
+      const free = line.match(/^\s*free\b[\s:!-]*(.*)$/i);
+      return free
+        ? '<li class="deal-card deal-card-free"><span class="deal-badge">FREE</span><span class="deal-text">' + esc(free[1]) + "</span></li>"
+        : '<li class="deal-card"><span class="deal-text">' + esc(line) + "</span></li>";
     }).join("");
     list.hidden = false;
     const fallback = document.getElementById("deals-default");
