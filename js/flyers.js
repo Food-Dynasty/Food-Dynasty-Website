@@ -6,7 +6,7 @@
 
   What it does depends on what the page has:
     every page               adds a holiday link to the menu while a holiday menu is up
-    #holiday-banner (home)   a "Thanksgiving Dinner menu is here" banner
+    #holiday-feature (home)  a big holiday section (if "Feature on homepage" is on)
     #headline-deals (home)   this week's 1-3 best offers, in big letters
     #weekly-flyer (sales)    this week's ad pictures
     #holiday-page (holiday)  the whole holiday page: title, note, pictures, colors
@@ -87,14 +87,53 @@
     list.insertBefore(item, catering ? catering.parentElement.nextSibling : null);
   }
 
-  // ---------- Homepage: banner ----------
-  function fillHolidayBanner(flyer) {
-    const banner = document.getElementById("holiday-banner");
-    if (!banner) return;
-    banner.dataset.theme = flyer.theme;
-    banner.querySelector("[data-title]").textContent = flyer.title;
-    banner.querySelector("[data-note]").textContent = flyer.note || "Our holiday menu is here. Order early!";
-    banner.hidden = false;
+  // The holiday's specials on the catering menu (js/catering-menu.js), if that file is on
+  // this page and the specials can still be ordered online. Otherwise an empty list.
+  function holidaySpecials(theme) {
+    if (typeof CATERING_MENU === "undefined") return [];
+    const category = CATERING_MENU.find(function (c) { return c.season === theme && categoryInSeason(c); });
+    return category ? category.items : [];
+  }
+
+  // 299 -> "$299", 12.5 -> "$12.50"
+  function price(amount) {
+    return "$" + (Number.isInteger(amount) ? amount : amount.toFixed(2));
+  }
+
+  // ---------- Homepage: the big holiday section ----------
+  // Shown only while a holiday menu is up AND its "Feature on homepage" switch is on.
+  function fillHolidayFeature(flyer) {
+    const box = document.getElementById("holiday-feature");
+    if (!box || flyer.featured === false) return;
+    const part = function (name) { return box.querySelector("[data-" + name + "]"); };
+
+    box.dataset.theme = flyer.theme;
+    part("title").textContent = flyer.title;
+    if (flyer.note) {
+      part("note").textContent = flyer.note;
+      part("note").hidden = false;
+    }
+
+    // Prices straight from the catering menu, so they always match the order page.
+    // "Thanksgiving Dinner for 8–10" -> "Dinner for 8–10" (the title already says Thanksgiving)
+    const specials = holidaySpecials(flyer.theme);
+    if (specials.length) {
+      const prefix = (THEME_NAMES[flyer.theme] || "") + " ";
+      part("prices").innerHTML = specials.map(function (item) {
+        const name = item.name.indexOf(prefix) === 0 ? item.name.slice(prefix.length) : item.name;
+        const amount = item.unit ? item.price : item.sizes[0][1];
+        return "<li><span>" + esc(name) + "</span><strong>" + price(amount) + "</strong></li>";
+      }).join("");
+      part("prices").hidden = false;
+      part("order").hidden = false;   // "Order Online" only while they can be ordered online
+    }
+
+    if ((flyer.pages || [])[0]) {
+      part("image").src = flyer.pages[0];
+      part("image").alt = flyer.title + " menu";
+      part("flyer").hidden = false;
+    }
+    box.hidden = false;
   }
 
   // ---------- Weekly Sales page ----------
@@ -166,7 +205,7 @@
   holiday.then(function (flyer) {
     if (flyer && (flyer.pages || []).length) {
       addHolidayNavLink(flyer);
-      fillHolidayBanner(flyer);
+      fillHolidayFeature(flyer);
     }
     fillHolidayPage(flyer);
   });

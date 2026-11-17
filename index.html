@@ -35,9 +35,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
 
   <!-- NEW: connect our own stylesheet. Without this line, the CSS file does nothing. -->
-  <link rel="stylesheet" href="css/styles.css?v=20261116f">
-  <script src="js/animate.js?v=20261116f" defer></script>
-  <script src="js/flyers.js?v=20261116f" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261116g">
+  <script src="js/animate.js?v=20261116g" defer></script>
+  <!-- The catering menu (for the holiday dinner prices), then the flyers code that uses it -->
+  <script src="js/catering-menu.js?v=20261116g" defer></script>
+  <script src="js/flyers.js?v=20261116g" defer></script>
 </head>
 
 <!-- ===================== BODY =====================
@@ -105,12 +107,30 @@
       </div>
     </section>
 
-    <!-- HOLIDAY BANNER: hidden until js/flyers.js finds a holiday menu uploaded in the
-         FD Orders app. Then it fills in the title and note and shows the banner. -->
-    <section class="holiday-banner" id="holiday-banner" data-theme="general" hidden>
-      <div class="container">
-        <p><strong data-title>Holiday Menu</strong> <span data-note></span></p>
-        <a class="button" href="holiday.html">See the Menu</a>
+    <!-- HOLIDAY FEATURE: a big section in the holiday's colors, hidden until js/flyers.js
+         finds a holiday menu uploaded in FD Orders with "Feature on homepage" turned on.
+         flyers.js fills in every [data-...] part: title, note, prices (from the catering
+         menu), the "Order Online" button (only while the specials can be ordered online)
+         and the first page of the menu as a picture. data-theme sets the colors. -->
+    <section class="holiday-feature" id="holiday-feature" data-theme="general" hidden>
+      <div class="holiday-decor" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="container holiday-feature-inner">
+        <div class="holiday-feature-text">
+          <p class="eyebrow">Holiday Dinners</p>
+          <h2 data-title>Holiday Menu</h2>
+          <p class="holiday-note" data-note hidden></p>
+          <ul class="holiday-prices" data-prices hidden></ul>
+          <div class="holiday-feature-buttons">
+            <a class="button" href="order.html" data-order hidden>Order Online</a>
+            <a class="button button-outline" href="holiday.html">See the Menu</a>
+            <a class="button button-outline" href="tel:+17188161100">Call 718-816-1100</a>
+          </div>
+        </div>
+        <a class="holiday-feature-flyer" href="holiday.html" data-flyer hidden>
+          <img src="" alt="" data-image>
+        </a>
       </div>
     </section>
 
