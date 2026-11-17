@@ -2,7 +2,7 @@
 
 The website for **Food Dynasty Supermarket**, a family-owned grocery store at 1071 Bay St, Staten Island, NY. I built it to replace the store's Wix site and to give customers a faster, clearer way to see hours, weekly deals and catering, and to order online.
 
-**Live site:** https://food-dynasty.github.io/Food-Dynasty-Website/
+**Live site:** https://fooddynastymarket.com
 **Companion staff app:** [Food-Dynasty-orders](https://github.com/Food-Dynasty/Food-Dynasty-orders)
 
 ## Why I built it
