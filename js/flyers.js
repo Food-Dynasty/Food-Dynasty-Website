@@ -157,9 +157,21 @@
   // ---------- Homepage: headline deals in the "This Week's Deals" band ----------
   function fillHeadlineDeals(flyer) {
     const list = document.getElementById("headline-deals");
-    if (!list || !flyer || !flyer.headline) return;
-    const lines = flyer.headline.split("\n").filter(function (line) { return line.trim(); });
-    if (!lines.length) return;
+    if (!list || !flyer) return;
+    const lines = (flyer.headline || "").split("\n").filter(function (line) { return line.trim(); });
+    const pictures = flyer.deal_images || [];
+    if (!lines.length && !pictures.length) return;
+
+    if (pictures.length) {
+      // DEAL PICTURES (cut from the ad by staff): shown big, each one a link to the full ad.
+      // The deal lines, if any, become each picture's description for screen readers.
+      list.classList.add("deal-pictures");
+      list.innerHTML = pictures.map(function (url, i) {
+        return '<li><a class="deal-picture" href="sales.html">' +
+                 '<img src="' + esc(url) + '" alt="' + esc(lines[i] || "This week's deal") + '"' + (i > 1 ? ' loading="lazy"' : "") + ">" +
+               "</a></li>";
+      }).join("");
+    } else {
     // A line starting with FREE becomes a card with a big yellow FREE tag:
     //   "FREE turkey with a $250 purchase" -> [FREE] turkey with a $250 purchase
     // Other lines show as plain deal cards.
@@ -169,6 +181,7 @@
         ? '<li class="deal-card deal-card-free"><span class="deal-badge">FREE</span><span class="deal-text">' + esc(free[1]) + "</span></li>"
         : '<li class="deal-card"><span class="deal-text">' + esc(line) + "</span></li>";
     }).join("");
+    }
     list.hidden = false;
     const fallback = document.getElementById("deals-default");
     if (fallback && flyer.ends_on) fallback.textContent = "Deals good through " + niceDate(flyer.ends_on) + ".";

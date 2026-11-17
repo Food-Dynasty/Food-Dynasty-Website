@@ -19,9 +19,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=20261116h">
-  <script src="js/animate.js?v=20261116h" defer></script>
-  <script src="js/flyers.js?v=20261116h" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=20261116i">
+  <script src="js/animate.js?v=20261116i" defer></script>
+  <script src="js/flyers.js?v=20261116i" defer></script>
 </head>
 
 <body>
@@ -135,15 +135,18 @@
           </div>
 
           <!-- GOOGLE MAP EMBED
-               "output=embed" asks Google for a version made to be shown inside other sites.
+               The official embed code from Google Maps (Share -> Embed a map), pinned to
+               the store's own Google listing. Google's width/height/style were left out:
+               the .map class in styles.css sizes it to fit the screen instead.
                title = a description for screen readers (every iframe needs one).
                loading="lazy" = don't load the map until the visitor scrolls near it,
                so the rest of the page loads faster. -->
           <iframe class="map"
-            src="https://www.google.com/maps?q=Food+Dynasty+Supermarkets,+1071+Bay+St,+Staten+Island,+NY+10305&output=embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.5631972431424!2d-74.07260380321041!3d40.61746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24f002907fb95%3A0xbe48daacf2063f29!2sFood%20Dynasty%20Supermarkets!5e0!3m2!1sen!2sus!4v1794886177864!5m2!1sen!2sus"
             title="Map showing Food Dynasty Supermarket at 1071 Bay St, Staten Island"
+            allowfullscreen
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
       </div>
     </section>
