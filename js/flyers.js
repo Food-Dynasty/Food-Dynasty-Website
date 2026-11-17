@@ -7,6 +7,7 @@
   What it does depends on what the page has:
     every page               adds a holiday link to the menu while a holiday menu is up
     #holiday-banner (home)   a "Thanksgiving Dinner menu is here" banner
+    #headline-deals (home)   this week's 1-3 best offers, in big letters
     #weekly-flyer (sales)    this week's ad pictures
     #holiday-page (holiday)  the whole holiday page: title, note, pictures, colors
 
@@ -114,6 +115,21 @@
     box.hidden = false;
   }
 
+  // ---------- Homepage: headline deals in the "This Week's Deals" band ----------
+  function fillHeadlineDeals(flyer) {
+    const list = document.getElementById("headline-deals");
+    if (!list || !flyer || !flyer.headline) return;
+    const lines = flyer.headline.split("\n").filter(function (line) { return line.trim(); });
+    if (!lines.length) return;
+    // A word like FREE gets the yellow highlight, so the offer jumps out
+    list.innerHTML = lines.map(function (line) {
+      return "<li>" + esc(line).replace(/\b(FREE|Free|free)\b/g, '<span class="deal-free">$1</span>') + "</li>";
+    }).join("");
+    list.hidden = false;
+    const fallback = document.getElementById("deals-default");
+    if (fallback && flyer.ends_on) fallback.textContent = "Deals good through " + niceDate(flyer.ends_on) + ".";
+  }
+
   // ---------- Holiday page ----------
   function fillHolidayPage(flyer) {
     const page = document.getElementById("holiday-page");
@@ -154,5 +170,10 @@
     }
     fillHolidayPage(flyer);
   });
-  if (document.getElementById("weekly-flyer")) currentFlyer("weekly").then(fillWeekly);
+  if (document.getElementById("weekly-flyer") || document.getElementById("headline-deals")) {
+    currentFlyer("weekly").then(function (flyer) {
+      fillWeekly(flyer);
+      fillHeadlineDeals(flyer);
+    });
+  }
 })();
