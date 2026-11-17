@@ -808,6 +808,19 @@ html {
   font-weight: 800;
 }
 
+/* The same yellow circle holding a line icon instead of a number
+   (Shop From Home and Store Perks). The <svg> is drawn with lines only:
+   no fill, a 2px black outline with rounded ends. */
+.icon-circle svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* A black version of the button, for light or yellow backgrounds */
 .button-dark {
   background: var(--black);
